@@ -1,4 +1,4 @@
-#include "war_gene.h"
+#include "../include/war_gene.h"
 
 class WarGene {
 private:
