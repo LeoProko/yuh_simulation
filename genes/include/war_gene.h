@@ -1,5 +1,6 @@
-#include "../position/position.h"
-#include "../cell/cell.h"
+#include "cell.h"
+#include "map.h"
+#include "position.h"
 
 #include <vector>
 

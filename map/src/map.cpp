@@ -1,4 +1,4 @@
-#include "../include/map.h"
+#include "map.h"
 
 class Map {
 private:
@@ -18,13 +18,17 @@ public:
     void RespawnFood() {
         for (size_t i = 0; i < size_; ++i) {
             for (size_t j = 0; j < size_; ++j) {
-                map_[i][j].food_count_ = 0;
+                map_[i][j].food_counter_ = 0;
             }
         }
 
         std::random_device rd;
         for (size_t i = 0; i < food_amount_; ++i) {
-            ++map_[rd()][rd()].food_count_;
+            ++map_[rd()][rd()].food_counter_;
         }
+    }
+
+    std::vector<Cell>& operator[](size_t i) {
+        return map_[i];
     }
 };
