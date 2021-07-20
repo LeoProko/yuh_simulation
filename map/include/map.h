@@ -1,5 +1,5 @@
-#include "../position/position.h"
-#include "../cell/cell.h"
+#include "cell.h"
+#include "position.h"
 
 #include <vector>
 #include <random>
