@@ -2,5 +2,6 @@
 #include "../cell/cell.h"
 
 #include <vector>
+#include <random>
 
-class WarGene;
+class Map;

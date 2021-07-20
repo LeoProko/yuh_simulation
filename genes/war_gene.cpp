@@ -2,11 +2,11 @@
 
 class WarGene {
 private:
-    std::vector<std::vector<Point>>& map_;
+    std::vector<std::vector<Cell>>& map_;
     Position& position_;
 
 public:
-    WarGene(std::vector<std::vector<Point>>& map, Position& position)
+    WarGene(std::vector<std::vector<Cell>>& map, Position& position)
         : map_(map)
         , position_(position) {}
 
