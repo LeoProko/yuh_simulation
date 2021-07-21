@@ -73,7 +73,7 @@ git push
 
 ```bash
 [user]
-	name = github_username
+    name = github_username
     email = github_email
 
 [alias]
