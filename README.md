@@ -73,7 +73,7 @@ git push
 
 ```bash
 [user]
-	name = github_username
+    name = github_username
     email = github_email
 
 [alias]
@@ -90,16 +90,18 @@ git push
 
 ## Сборка
 
-Выполните эти команды в папке с проектом
+Запустите файл make_and_run.sh
+```bash
+./make_and_run.sh
+```
+
+Этот файл сотосит из команд
 
 ```bash
 mkdir build
 cd build
 cmake ..
 make -j
+./run/bin/run
+cd ..
 ```
-
-Первые две команды вы делаете один раз.
-`cmake ..` нужно писать только после изменения `CMakeLists.txt`,
-а `make` перед каждой компиляцией проекта после изменения файлов.
-Флаг -j собирает проект на всех доступных ядрах компьютера.
