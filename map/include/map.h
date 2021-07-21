@@ -1,3 +1,5 @@
+#pragma once
+
 #include "cell.h"
 #include "position.h"
 
