@@ -7,14 +7,14 @@
 class Map {
 private:
     std::vector<std::vector<Cell>> map_;
-    size_t size_;
-    size_t bots_amount_;
-    size_t food_amount_;
+    int size_;
+    int bots_amount_;
+    int food_amount_;
 
 public:
-    Map(size_t size, size_t bots_amount, size_t food_amount);
+    Map(int size, int bots_amount, int food_amount);
 
     void RespawnFood();
 
-    std::vector<Cell>& operator[](const size_t i);
+    std::vector<Cell>& operator[](const int i);
 };
