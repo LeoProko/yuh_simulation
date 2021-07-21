@@ -1,9 +1,14 @@
-get_filename_component(LIB_INCLUDE_PATH ".." ABSOLUTE)
-get_filename_component(LIB_PATH "." ABSOLUTE)
+project(genes)
 
-file(GLOB_RECURSE LIB_CXX_SOURCES ${LIB_PATH}/*.cpp)
-file(GLOB_RECURSE LIB_HEADERS ${LIB_PATH}/*.h)
+file(GLOB_RECURSE LIB_CXX_SOURCES ${PROJECT_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE LIB_HEADERS ${PROJECT_SOURCE_DIR}/*.h)
 
-add_library(genes STATIC ${LIB_CXX_SOURCES} ${LIB_HEADERS})
+add_library(${PROJECT_NAME} ${LIB_CXX_SOURCES})
 
-target_include_directories(genes PUBLIC ${LIB_INCLUDE_PATH})
+target_include_directories(${PROJECT_NAME}
+    PUBLIC ${PROJECT_SOURCE_DIR}/include
+)
+
+target_link_libraries(${PROJECT_NAME}
+    map
+)
