@@ -1,9 +1,11 @@
-get_filename_component(LIB_INCLUDE_PATH ".." ABSOLUTE)
-get_filename_component(LIB_PATH "." ABSOLUTE)
+project(map)
 
-file(GLOB_RECURSE LIB_CXX_SOURCES ${LIB_PATH}/*.cpp)
-file(GLOB_RECURSE LIB_HEADERS ${LIB_PATH}/*.h)
+file(GLOB_RECURSE LIB_CXX_SOURCES ${PROJECT_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE LIB_HEADERS ${PROJECT_SOURCE_DIR}/*.h)
 
-add_library(map STATIC ${LIB_CXX_SOURCES} ${LIB_HEADERS})
+add_library(${PROJECT_NAME} ${LIB_CXX_SOURCES})
+add_library(sub::map ALIAS ${PROJECT_NAME})
 
-target_include_directories(map PUBLIC ${LIB_INCLUDE_PATH})
+target_include_directories(${PROJECT_NAME}
+    PUBLIC ${PROJECT_SOURCE_DIR}/include
+)
