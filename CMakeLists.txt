@@ -8,7 +8,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_compile_options(-Wall -Wextra -Werror)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin")
 
-add_subdirectory(behavior)
-add_subdirectory(bot)
+add_subdirectory(genes)
 add_subdirectory(map)
 add_subdirectory(run)
