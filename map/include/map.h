@@ -4,7 +4,7 @@
 #include "position.h"
 
 #include <vector>
-#include <random>
+#include <cstdlib>
 
 class Map {
 private:
