@@ -14,9 +14,8 @@ void Map::RespawnFood() {
         }
     }
 
-    std::random_device rd;
     for (int i = 0; i < food_amount_; ++i) {
-        ++map_[rd()][rd()].food_counter_;
+        ++map_[rand()][rand()].food_counter_;
     }
 }
 
