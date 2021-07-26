@@ -2,11 +2,9 @@
 #include <vector>
 #include <memory>
 
-#include <string>
-
+#include "behavior.h"
 #include "bot.h"
 #include "map.h"
-#include "behavior.h"
 
 class Run {
 private:

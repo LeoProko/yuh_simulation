@@ -14,7 +14,6 @@ std::vector<std::unique_ptr<Behavior>> Behavior::get_behaviors() const {
     return behaviors;
 }
 
-
 void Fight::action(const Bot& bot) {
     if (rand() % 100 < bot.militancy_) {
         if ((*tomorrpow_map_)[bot.position_.x][bot.position_.y].bot_counter_ >= 2) {
