@@ -16,7 +16,7 @@ void Map::RespawnFood() {
     }
 
     for (int i = 0; i < food_amount_; ++i) {
-        ++map_[rand()][rand()].food_counter_;
+        ++map_[rand() % size_][rand() % size_].food_counter_;
     }
 }
 

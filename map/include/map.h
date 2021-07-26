@@ -7,14 +7,16 @@
 #include <cstdlib>
 
 class Map {
-private:
+public:
     std::vector<std::vector<Cell>> map_;
     int size_;
     int bots_amount_;
     int food_amount_;
 
 public:
-    Map(int size, int bots_amount, int food_amount);
+    Map() = default;
+
+    Map(int size, int bots_amount = 0, int food_amount = 0);
 
     void RespawnFood();
 
