@@ -26,7 +26,7 @@ public:
 
     Bot(int map_size);
 
-    Bot(const Bot& mother, const Bot& father, int healt);
+    Bot(const Bot& mother, const Bot& father);
 
     void calibrate();
 };

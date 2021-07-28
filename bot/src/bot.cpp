@@ -12,10 +12,10 @@ Bot::Bot(int map_size)
     calibrate();
 }
 
-Bot::Bot(const Bot& mother, const Bot& father, int health) 
+Bot::Bot(const Bot& mother, const Bot& father) 
     : position_(mother.position_.x, mother.position_.y)
-    , health_(health)
-    , food_amount_(1)
+    , health_((mother.health_ + father.health_) / 2)
+    , food_amount_(5 + std::rand() % 5)
     , militancy_(std::min(100, std::max(0, (mother.militancy_ + father.militancy_) / 2 + std::rand() % 4 - 2)))
     , attractiveness_(std::min(100, std::max(0, (mother.attractiveness_ + father.attractiveness_) / 2 + std::rand() % 4 - 2)))
     , intelligence_(std::min(100, std::max(0, (mother.intelligence_ + father.intelligence_) / 2 + std::rand() % 4 - 2)))
