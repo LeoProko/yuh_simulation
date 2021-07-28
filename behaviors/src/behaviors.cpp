@@ -1,5 +1,2 @@
-#include "fight.h"
+#include "behaviours.h"
 
-void Fight::action(const Bot& bot, Map& map) {
-
-}
