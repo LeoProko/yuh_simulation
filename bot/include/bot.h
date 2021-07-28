@@ -12,9 +12,9 @@ public:
     // Genome
     int health_ = 100;  // from 0 to 100
     int food_amount_ = 1;  // from 0 to MAX_INT
-    int militancy_ = rand() % 101;  // from 0 to 100
-    int attractiveness_ = rand() % 101;
-    int intelligence_ = rand() % 101;
+    int militancy_ = std::rand() % 101;  // from 0 to 100
+    int attractiveness_ = std::rand() % 101;
+    int intelligence_ = std::rand() % 101;
     
     Bot() = delete;
 
