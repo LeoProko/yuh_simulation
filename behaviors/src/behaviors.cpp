@@ -1,9 +1,9 @@
 #include "behaviours.h"
 
-void Reproduce(/*args*/) {
+void reproduce(Cell& cell) {
     // Reproduce
 }
 
-void SplitFood(/*args*/) {
+void split_food(Cell& cell) {
     // Split food
 }

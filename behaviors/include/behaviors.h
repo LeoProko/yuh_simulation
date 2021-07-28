@@ -3,6 +3,6 @@
 #include "cell.h"
 #include "bot.h"
 
-void Reproduce(/*args*/);
+void reproduce(Cell& cell);
 
-void SplitFood(/*args*/);
+void split_food(Cell& cell);
