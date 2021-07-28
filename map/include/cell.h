@@ -2,14 +2,11 @@
 
 #include "behaviors.h"
 
-struct Cell {
+class Cell {
     int bot_counter_ = 0;
     int food_counter_ = 0;
 
     Cell() = default;
 
-    void DoAll() {
-        // Reproduce()
-        // SplitFood()
-    }
+    void do_all();
 };
