@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdlib>
+#include <set>
 
 #include "position.h"
 

@@ -1,4 +1,4 @@
-project(behavior)
+project(behaviors)
 
 file(GLOB_RECURSE LIB_CXX_SOURCES ${PROJECT_SOURCE_DIR}/*.cpp)
 file(GLOB_RECURSE LIB_HEADERS ${PROJECT_SOURCE_DIR}/*.h)
