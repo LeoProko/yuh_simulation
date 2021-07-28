@@ -13,7 +13,6 @@ public:
 
     // Characteristics
     int health_ = 100;  // from 0 to 100
-    int food_amount_ = 1;  // from 0 to MAX_INT
 
     // Genome
     int militancy_ = std::rand() % 101;  // from 0 to 100
