@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdlib>
+#include <algorithm>
 
 #include "position.h"
 
@@ -11,9 +12,13 @@ public:
     // Genome
     int health_ = 100;  // from 0 to 100
     int food_amount_ = 1;  // from 0 to MAX_INT
-    int militancy_ = 50;  // from 0 to 100
-
+    int militancy_ = rand() % 101;  // from 0 to 100
+    int attractiveness_ = rand() % 101;
+    int intelligence_ = rand() % 101;
+    
     Bot() = delete;
 
-    Bot(int size);
+    Bot(int map_size);
+
+    Bot(Bot& mother, Bot& father);
 };
