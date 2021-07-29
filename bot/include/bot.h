@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdlib>
-#include <algorithm>
+#include <set>
 
 #include "position.h"
 
