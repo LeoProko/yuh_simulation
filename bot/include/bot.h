@@ -21,6 +21,8 @@ public:
     int childern_amount_ = std::rand() % 101;
     int children_health_ = std::rand() % 101;
 
+    std::vector<int*> genes_iter_;
+
     Bot() = delete;
 
     Bot(int map_size);
@@ -28,4 +30,6 @@ public:
     Bot(const Bot& mother, const Bot& father);
 
     void calibrate();
+
+    void fill_genes_iter();
 };
