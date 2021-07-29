@@ -1,4 +1,4 @@
-project(behaviors)
+project(cell)
 
 file(GLOB_RECURSE LIB_CXX_SOURCES ${PROJECT_SOURCE_DIR}/*.cpp)
 file(GLOB_RECURSE LIB_HEADERS ${PROJECT_SOURCE_DIR}/*.h)
@@ -11,5 +11,5 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
     bot
-    map
+    position
 )
