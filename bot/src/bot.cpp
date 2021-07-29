@@ -38,6 +38,6 @@ void Bot::calibrate() {
     }
 }
 
-friend bool Bot::operator<(const Bot& first, const Bot& second) {
+bool operator<(const Bot& first, const Bot& second) {
     return first.attractiveness_ < second.attractiveness_;
 }
