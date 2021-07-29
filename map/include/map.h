@@ -1,5 +1,6 @@
 #pragma once
 
+#include "bot.h"
 #include "cell.h"
 #include "position.h"
 
