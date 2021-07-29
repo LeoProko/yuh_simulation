@@ -32,4 +32,6 @@ public:
     void calibrate();
 
     void fill_genes_iter();
+
+    friend bool operator<(const Bot& first, const Bot& second);
 };

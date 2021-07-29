@@ -4,6 +4,7 @@ Bot::Bot(int map_size)
     : position_(std::rand() % map_size, std::rand() % map_size)
     , health_(std::rand() % 101) {
 
+    fill_genes_iter();
     for (int i = 0; i < genes_amount_; ++i) {
         *genes_iter_[i] = std::rand() % 101;
     }
@@ -14,6 +15,7 @@ Bot::Bot(const Bot& mother, const Bot& father)
     : position_(mother.position_.x, mother.position_.y)
     , health_((mother.health_ + father.health_) / 2) {
 
+    fill_genes_iter();
     for (int i = 0; i < genes_amount_; ++i) {
         *genes_iter_[i] = (*mother.genes_iter_[i] + *father.genes_iter_[i]) / 2;
     }
@@ -34,4 +36,8 @@ void Bot::calibrate() {
         *genes_iter_[i] *= coeff;
         *genes_iter_[i] = std::min(std::max(*genes_iter_[i], 0), 100);
     }
+}
+
+friend bool Bot::operator<(const Bot& first, const Bot& second) {
+    return first.attractiveness_ < second.attractiveness_;
 }
