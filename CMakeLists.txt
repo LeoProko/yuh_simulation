@@ -10,6 +10,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin")
 
 add_subdirectory(bot)
 add_subdirectory(cell)
-add_subdirectory(position)
+add_subdirectory(main)
 add_subdirectory(map)
-add_subdirectory(run)
+add_subdirectory(position)
