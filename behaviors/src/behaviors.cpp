@@ -1,10 +1,7 @@
-#include "behaviours.h"
+#include "behaviors.h"
 
 void reproduce(Cell& cell) {
-    if (cell.bots_.size() >= 2) {
-        cell.bots.emplace_back(*(cell.bots_.begin()), *(cell.bots_.begin() + 1));
-        cell.
-    }
+    // Reproduce
 }
 
 void split_food(Cell& cell) {
