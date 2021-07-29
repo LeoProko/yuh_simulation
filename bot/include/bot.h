@@ -13,7 +13,7 @@ public:
     int food_amount_ = 1;  // from 0 to MAX_INT
     int militancy_ = 50;  // from 0 to 100
 
-    Bot() = delete;
+    Bot() = default;
 
     Bot(int size);
 };

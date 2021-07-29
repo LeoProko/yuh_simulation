@@ -1,7 +1,8 @@
 #include "map.h"
 
 Map::Map(int size, int bots_amount, int food_amount)
-    : size_(size)
+    : map_(size, std::vector<Cell>(size))
+    , size_(size)
     , bots_amount_(bots_amount)
     , food_amount_(food_amount) {
     RespawnFood();    
@@ -15,7 +16,7 @@ void Map::RespawnFood() {
     }
 
     for (int i = 0; i < food_amount_; ++i) {
-        ++map_[rand()][rand()].food_counter_;
+        ++map_[rand() % size_][rand() % size_].food_counter_;
     }
 }
 

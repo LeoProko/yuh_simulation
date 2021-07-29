@@ -4,7 +4,7 @@ struct Position {
     int x;
     int y;
     
-    Position() = delete;
+    Position() = default;
 
     Position(int first, int second);
 };
