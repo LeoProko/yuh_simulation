@@ -6,6 +6,7 @@
 
 #include "bot.h"
 #include "map.h"
+#include "move.h"
 
 class Run {
 private:

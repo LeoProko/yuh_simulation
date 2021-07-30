@@ -21,7 +21,7 @@ void Run::run(int map_size, int bots_amount, int days_amount) {
         std::cout << "Day number " << today << "\n";
         for (auto& cell : today_map_) {
             for (auto& bot : cell.bots_) {
-                bot.move();
+                move(bot, today_map_);
             }
             ++passes_amount;
         }

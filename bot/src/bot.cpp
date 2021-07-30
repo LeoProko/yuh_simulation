@@ -38,10 +38,6 @@ void Bot::calibrate() {
     }
 }
 
-void Bot::move() {
-    // move implementation
-}
-
 bool operator<(const Bot& first, const Bot& second) {
     return first.attractiveness_ < second.attractiveness_;
 }
