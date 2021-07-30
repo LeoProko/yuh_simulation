@@ -33,5 +33,7 @@ public:
 
     void fill_genes_iter();
 
+    void move();
+
     friend bool operator<(const Bot& first, const Bot& second);
 };

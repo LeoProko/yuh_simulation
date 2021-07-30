@@ -12,7 +12,7 @@ Map::Map(int size, int bots_amount, int food_amount)
 
 void Map::spawn_bots(int bots_amount) {
     for (int i = 0; i < bots_amount; ++i) {
-        map_[rand() % size_][rand() % size_].bots_.insert(Bot(size_));
+        map_[rand() % size_][rand() % size_].bots_.push_back(Bot(size_));
     }
 }
 
