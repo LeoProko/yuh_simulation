@@ -39,8 +39,7 @@ void Bot::calibrate() {
 }
 
 void Bot::move() {
-    position_.x = 0;
-    position_.y = 0;
+    // move implementation
 }
 
 bool operator<(const Bot& first, const Bot& second) {
