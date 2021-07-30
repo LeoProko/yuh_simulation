@@ -107,9 +107,9 @@ cd ..
 
 ## Запуск
 
-Запустите файл run.sh
+Запустите файл start_simulation.sh
 ```bash
-./run.sh
+./start_simulation.sh
 ```
 
 Этот файл сотосит из команд
