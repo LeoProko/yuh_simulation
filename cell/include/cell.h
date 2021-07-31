@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <deque>
 
 #include "bot.h"
 #include "position.h"
@@ -15,7 +15,7 @@ public:
     int bot_counter_ = 0;
     int food_counter_ = 0;
 
-    std::vector<Bot> bots_;
+    std::deque<Bot> bots_;
 
     Cell() = default;
 
