@@ -40,6 +40,10 @@ std::vector<Cell>& Map::operator[](const int i) {
     return map_[i];
 }
 
+Cell& Map::operator[](const Position& position) {
+    return map_[position.x][position.y];
+}
+
 Map::Iterator::Iterator(Map& map, int row, int column)
     : map_(map)
     , iter_row_(row)

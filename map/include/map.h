@@ -51,6 +51,8 @@ public:
 
     std::vector<Cell>& operator[](const int i);
 
+    Cell& operator[](const Position& position);
+
     Iterator begin();
 
     Iterator end();
