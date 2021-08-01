@@ -1,12 +1,8 @@
 #include "bot.h"
 
 Bot::Bot(int map_size)
-    : position_(std::rand() % map_size, std::rand() % map_size),
-      health_(std::rand() % 100) {
+    : position_(std::rand() % map_size, std::rand() % map_size) {
   fill_genes_iter();
-  for (int i = 0; i < genes_amount_; ++i) {
-    *genes_iter_[i] = std::rand() % 100;
-  }
   calibrate();
 }
 
@@ -34,7 +30,7 @@ void Bot::calibrate() {
                  childern_amount_ + children_health_);
   for (int i = 0; i < genes_amount_; ++i) {
     *genes_iter_[i] *= coeff;
-    *genes_iter_[i] = std::min(std::max(*genes_iter_[i], 0), 100);
+    *genes_iter_[i] = std::min(std::max(*genes_iter_[i], 0), 99);
   }
 }
 

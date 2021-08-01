@@ -36,14 +36,14 @@ private:
     int bots_amount_;
     int food_amount_;
 
-    void spawn_bots(std::deque<Bot>& all_bots, int bot_count);
+    void spawn_bots(std::deque<Bot>& all_bots);
+
+    void respawn_food();
 
 public:
     Map() = default;
 
     Map(std::deque<Bot>& all_bots, int size, int bots_amount = 0, int food_amount = 0);
-
-    void respawn_food();
 
     int size() const;
 

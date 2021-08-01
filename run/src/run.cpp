@@ -18,18 +18,17 @@ void Run::run(int map_size, int bots_amount, int days_amount) {
 
   std::deque<Bot> all_bots;
   init(all_bots, map_size, bots_amount, days_amount);
-  std::set<Position> used_positions;
   int64_t passes_amount = 0;
 
   for (int today = 1; today <= days_amount_; ++today) {
     std::cout << "Day number " << today << "\n";
-    used_positions.clear();
     for (auto& bot : all_bots) {
       move(bot, today_map_);
-      used_positions.insert(bot.position_);
+      today_map_[bot.position_].bots_.push_back(&bot);
     }
-    for (auto& position : used_positions) {
-      today_map_[position].do_all();
+
+    for (auto& bot : all_bots) {
+      today_map_[bot.position_].do_all();
       ++passes_amount;
     }
   }
