@@ -13,7 +13,7 @@ Map::Map(std::deque<Bot>& all_bots, int size, int bots_amount, int food_amount)
 void Map::spawn_bots(std::deque<Bot>& all_bots, int bots_amount) {
     for (int i = 0; i < bots_amount; ++i) {
         all_bots.push_back(Bot(size_));
-        map_[rand() % size_][rand() % size_].bots_.push_back(all_bots.back());
+        map_[rand() % size_][rand() % size_].bots_.push_back(&all_bots.back());
     }
 }
 
