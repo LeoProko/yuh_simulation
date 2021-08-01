@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <memory>
+#include <set>
 
 #include "bot.h"
 #include "map.h"
@@ -15,7 +16,7 @@ private:
     int days_amount_;
     Map today_map_;
 
-    void init(int map_size, int bots_amount, int days_amount);
+    void init(std::deque<Bot>& all_bots, int map_size, int bots_amount, int days_amount);
 
 public:
     Run() = default;

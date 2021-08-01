@@ -2,7 +2,7 @@
 
 void move(Cell& cell, Map& map) {
     for (int i = 0; i < cell.bot_counter_; ++i) {
-        Bot& bot = cell.bots_.front();
+        Bot& bot = *cell.bots_.front();
         std::vector<Position> positions;
 
         int left_border   = std::max(0,          bot.position_.x - 1);
@@ -26,7 +26,7 @@ void move(Cell& cell, Map& map) {
 
         bot.position_ = positions[bot.intelligence_ * positions.size() / 100];
 
-        map[bot.position_].bots_.push_back(bot);
+        map[bot.position_].bots_.push_back(&bot);
         cell.bots_.pop_front();
     }
 }

@@ -1,18 +1,19 @@
 #include "map.h"
 #include "bot.h"
 
-Map::Map(int size, int bots_amount, int food_amount)
+Map::Map(std::deque<Bot>& all_bots, int size, int bots_amount, int food_amount)
     : map_(size, std::vector<Cell>(size))
     , size_(size)
     , bots_amount_(bots_amount)
     , food_amount_(food_amount) {
-    spawn_bots(bots_amount_);
+    spawn_bots(all_bots, bots_amount_);
     respawn_food();    
 }
 
-void Map::spawn_bots(int bots_amount) {
+void Map::spawn_bots(std::deque<Bot>& all_bots, int bots_amount) {
     for (int i = 0; i < bots_amount; ++i) {
-        map_[rand() % size_][rand() % size_].bots_.push_back(Bot(size_));
+        all_bots.push_back(Bot(size_));
+        map_[rand() % size_][rand() % size_].bots_.push_back(all_bots.back());
     }
 }
 
