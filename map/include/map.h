@@ -6,44 +6,24 @@
 
 #include <vector>
 #include <cstdlib>
+#include <list>
 
 class Map {
 private:
-    class Iterator {
-    private:
-        Map& map_;
-        int iter_row_;
-        int iter_column_;
-
-    public:
-        Iterator() = delete;
-
-        Iterator(Map& map, int row = 0, int column = 0);
-
-        Cell& operator*();
-
-        Iterator& operator++();
-
-        Iterator operator++(int);
-
-        bool operator==(Iterator other) const;
-
-        bool operator!=(Iterator other) const;
-    };
-
     std::vector<std::vector<Cell>> map_;
     int size_;
     int bots_amount_;
+    int food_iter_;
     int food_amount_;
 
-    void spawn_bots(int bot_count);
+    void spawn_bots(std::list<Bot>& all_bots);
+
+    void respawn_food();
 
 public:
     Map() = default;
 
-    Map(int size, int bots_amount = 0, int food_amount = 0);
-
-    void respawn_food();
+    Map(std::list<Bot>& all_bots, int size, int bots_amount = 0, int food_iter = 0);
 
     int size() const;
 
@@ -51,7 +31,5 @@ public:
 
     std::vector<Cell>& operator[](const int i);
 
-    Iterator begin();
-
-    Iterator end();
+    Cell& operator[](const Position& position);
 };
