@@ -11,9 +11,9 @@ Bot::Bot(int map_size)
     calibrate();
 }
 
-Bot::Bot(const Bot& mother, const Bot& father) 
+Bot::Bot(const Bot& mother, const Bot& father)
     : position_(mother.position_.x, mother.position_.y)
-    , health_((mother.health_ + father.health_) / 2) {
+    , health_((mother.children_health_ + father.children_health_) / 2) {
 
     fill_genes_iter();
     for (int i = 0; i < genes_amount_; ++i) {

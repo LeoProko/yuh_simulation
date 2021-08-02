@@ -12,6 +12,8 @@ Map::Map(int size, int bots_amount, int food_amount)
 
 void Map::spawn_bots(int bots_amount) {
     for (int i = 0; i < bots_amount; ++i) {
+        // нужно, вроде, переделать на
+        // run->all_bots.emplace_back(size_);
         map_[rand() % size_][rand() % size_].bots_.push_back(Bot(size_));
     }
 }
@@ -24,7 +26,7 @@ void Map::respawn_food() {
     }
 
     for (int i = 0; i < food_amount_; ++i) {
-        ++map_[rand() % size_][rand() % size_].food_counter_;
+        map_[rand() % size_][rand() % size_].food_counter_ = std::rand() % 201;
     }
 }
 
