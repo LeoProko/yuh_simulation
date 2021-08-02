@@ -7,8 +7,8 @@ Bot::Bot(int map_size)
 }
 
 Bot::Bot(const Bot& mother, const Bot& father)
-    : position_(mother.position_.x, mother.position_.y),
-      health_((mother.health_ + father.health_) / 2) {
+    : position_(mother.position_.x, mother.position_.y)
+    , health_((mother.health_ + father.health_) / 2) {
   fill_genes_iter();
   for (int i = 0; i < genes_amount_; ++i) {
     *genes_iter_[i] = (*mother.genes_iter_[i] + *father.genes_iter_[i]) / 2;

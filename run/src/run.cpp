@@ -1,6 +1,6 @@
 #include "run.h"
 
-void Run::init(std::deque<Bot>& all_bots, int map_size, int bots_amount, int days_amount) {
+void Run::init(std::list<Bot>& all_bots, int map_size, int bots_amount, int days_amount) {
   std::cout << "INITIALIZATION BEGIN\n";
   map_size_ = map_size;
   bots_amount_ = bots_amount;
@@ -16,7 +16,7 @@ void Run::run(int map_size, int bots_amount, int days_amount) {
   std::cout << "bots_amount = " << bots_amount << "\n";
   std::cout << "days_amount = " << days_amount << "\n";
 
-  std::deque<Bot> all_bots;
+  std::list<Bot> all_bots;
   init(all_bots, map_size, bots_amount, days_amount);
   int64_t passes_amount = 0;
 
@@ -26,6 +26,8 @@ void Run::run(int map_size, int bots_amount, int days_amount) {
       move(bot, today_map_);
       today_map_[bot.position_].bots_.push_back(&bot);
     }
+
+    std::cout << "Move completed\n";
 
     for (auto& bot : all_bots) {
       today_map_[bot.position_].do_all();
