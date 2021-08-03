@@ -27,10 +27,8 @@ void Run::run(int map_size, int bots_amount, int days_amount) {
             today_map_[bot.position_].bots_.push_back(&bot);
         }
 
-        int c = 0;
         std::list<Bot> new_bots;
         for (auto& bot : all_bots) {
-            ++c;
             today_map_[bot.position_].do_all(new_bots);
             ++passes_amount;
         }
