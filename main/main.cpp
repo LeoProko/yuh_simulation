@@ -7,7 +7,7 @@ int main() {
     Run run;
     int map_size = 5;
     int bots_amount = 10;
-    int days_amount = 100;
+    int days_amount = 10;
     run.run(map_size, bots_amount, days_amount);
     std::cout << "MAIN END" << "\n";
 }

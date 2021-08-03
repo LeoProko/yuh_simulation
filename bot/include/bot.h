@@ -9,7 +9,6 @@ class Bot {
 public:
     Position position_;
     int genes_amount_ = 5;
-    std::mt19937 random;
     std::vector<int*> genes_iter_;
 
     // Characteristics
@@ -24,7 +23,7 @@ public:
 
     Bot() = delete;
 
-    Bot(int map_size);
+    Bot(int map_size, std::mt19937& random);
 
     Bot(const Bot* mother, const Bot* father);
 

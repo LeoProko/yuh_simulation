@@ -1,8 +1,8 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
 #include <list>
+#include <vector>
 
 #include "bot.h"
 #include "map.h"

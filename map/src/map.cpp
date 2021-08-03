@@ -1,7 +1,12 @@
 #include "map.h"
 #include "bot.h"
 
-Map::Map(std::list<Bot>& all_bots, int size, int bots_amount, int food_iter)
+Map::Map(
+        std::list<Bot>& all_bots,
+        int size,
+        int bots_amount,
+        int food_iter
+    )
     : map_(size, std::vector<Cell>(size))
     , size_(size)
     , bots_amount_(bots_amount)
@@ -20,7 +25,7 @@ Cell& Map::operator[](const Position& position) {
 
 void Map::spawn_bots(std::list<Bot>& all_bots) {
     for (int i = 0; i < bots_amount_; ++i) {
-        all_bots.emplace_back(size_);
+        all_bots.emplace_back(size_, random_);
         (*this)[all_bots.back().position_].add_bot(all_bots.back());
     }
 }
@@ -33,9 +38,9 @@ void Map::respawn_food() {
     }
 
     for (int i = 0; i < food_iter_; ++i) {
-        int added_food = random() % 10;
+        int added_food = random_() % 10;
         food_amount_ += added_food;
-        map_[random() % size_][random() % size_].food_counter_ = added_food;
+        map_[random_() % size_][random_() % size_].food_counter_ = added_food;
     }
 }
 
