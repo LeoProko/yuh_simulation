@@ -1,15 +1,16 @@
 #pragma once
 
-#include <cstdlib>
 #include <algorithm>
+#include <random>
 
 #include "position.h"
 
 class Bot {
 public:
     Position position_;
-
     int genes_amount_ = 5;
+    std::mt19937 random;
+    std::vector<int*> genes_iter_;
 
     // Characteristics
     int health_ = 100;  // from 0 to 100
@@ -20,8 +21,6 @@ public:
     int intelligence_    = std::rand() % 100;
     int childern_amount_ = std::rand() % 100;
     int children_health_ = std::rand() % 100;
-
-    std::vector<int*> genes_iter_;
 
     Bot() = delete;
 

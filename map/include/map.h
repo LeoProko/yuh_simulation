@@ -4,9 +4,9 @@
 #include "cell.h"
 #include "position.h"
 
-#include <vector>
-#include <cstdlib>
 #include <list>
+#include <random>
+#include <vector>
 
 class Map {
 private:
@@ -15,6 +15,7 @@ private:
     int bots_amount_;
     int food_iter_;
     int food_amount_;
+    std::mt19937 random;
 
     void spawn_bots(std::list<Bot>& all_bots);
 

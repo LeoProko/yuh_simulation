@@ -33,9 +33,9 @@ void Map::respawn_food() {
     }
 
     for (int i = 0; i < food_iter_; ++i) {
-        int added_food = std::rand() % 10;
+        int added_food = random() % 10;
         food_amount_ += added_food;
-        map_[rand() % size_][rand() % size_].food_counter_ = added_food;
+        map_[random() % size_][random() % size_].food_counter_ = added_food;
     }
 }
 
