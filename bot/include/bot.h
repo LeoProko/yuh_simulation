@@ -16,17 +16,17 @@ public:
     int health_ = 100;  // from 0 to 100
 
     // Genome from 0 to 99
-    int militancy_       = std::rand() % 100;  
-    int attractiveness_  = std::rand() % 100;
-    int intelligence_    = std::rand() % 100;
-    int childern_amount_ = std::rand() % 100;
-    int children_health_ = std::rand() % 100;
+    int militancy_       = random() % 100;  
+    int attractiveness_  = random() % 100;
+    int intelligence_    = random() % 100;
+    int childern_amount_ = random() % 100;
+    int children_health_ = random() % 100;
 
     Bot() = delete;
 
     Bot(int map_size);
 
-    Bot(const Bot& mother, const Bot& father);
+    Bot(const Bot* mother, const Bot* father);
 
     void calibrate();
 

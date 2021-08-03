@@ -6,14 +6,14 @@ Bot::Bot(int map_size)
   calibrate();
 }
 
-Bot::Bot(const Bot& mother, const Bot& father)
-    : position_(mother.position_.x, mother.position_.y)
-    , health_((mother.health_ + father.health_) / 2) {
-  fill_genes_iter();
-  for (int i = 0; i < genes_amount_; ++i) {
-    *genes_iter_[i] = (*mother.genes_iter_[i] + *father.genes_iter_[i]) / 2;
-  }
-  calibrate();
+Bot::Bot(const Bot* mother, const Bot* father)
+    : position_(mother->position_.x, mother->position_.y)
+    , health_((mother->children_health_ + father->children_health_) / 2) {
+    fill_genes_iter();
+    for (int i = 0; i < genes_amount_; ++i) {
+        *genes_iter_[i] = (*mother->genes_iter_[i] + *father->genes_iter_[i]) / 2;
+    }
+    calibrate();
 }
 
 void Bot::fill_genes_iter() {
@@ -25,15 +25,15 @@ void Bot::fill_genes_iter() {
 }
 
 void Bot::calibrate() {
-  float coeff = 50. * genes_amount_ /
+    float coeff = 50. * genes_amount_ /
                 (militancy_ + intelligence_ + attractiveness_ +
                  childern_amount_ + children_health_);
-  for (int i = 0; i < genes_amount_; ++i) {
-    *genes_iter_[i] *= coeff;
-    *genes_iter_[i] = std::min(std::max(*genes_iter_[i], 0), 99);
-  }
+    for (int i = 0; i < genes_amount_; ++i) {
+        *genes_iter_[i] *= coeff;
+        *genes_iter_[i] = std::min(std::max(*genes_iter_[i], 0), 99);
+    }
 }
 
 bool operator<(const Bot& first, const Bot& second) {
-  return first.attractiveness_ < second.attractiveness_;
+    return first.attractiveness_ < second.attractiveness_;
 }
