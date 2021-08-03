@@ -1,9 +1,10 @@
 #include "bot.h"
+#include <iostream>
 
 Bot::Bot(int map_size)
     : position_(random() % map_size, random() % map_size) {
-  fill_genes_iter();
-  calibrate();
+    fill_genes_iter();
+    calibrate();
 }
 
 Bot::Bot(const Bot* mother, const Bot* father)
@@ -20,14 +21,14 @@ void Bot::fill_genes_iter() {
   genes_iter_.push_back(&militancy_);
   genes_iter_.push_back(&attractiveness_);
   genes_iter_.push_back(&intelligence_);
-  genes_iter_.push_back(&childern_amount_);
+  genes_iter_.push_back(&children_amount_);
   genes_iter_.push_back(&children_health_);
 }
 
 void Bot::calibrate() {
     float coeff = 50. * genes_amount_ /
                 (militancy_ + intelligence_ + attractiveness_ +
-                 childern_amount_ + children_health_);
+                 children_amount_ + children_health_);
     for (int i = 0; i < genes_amount_; ++i) {
         *genes_iter_[i] *= coeff;
         *genes_iter_[i] = std::min(std::max(*genes_iter_[i], 0), 99);

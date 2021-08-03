@@ -19,7 +19,7 @@ public:
     int militancy_       = random() % 100;  
     int attractiveness_  = random() % 100;
     int intelligence_    = random() % 100;
-    int childern_amount_ = random() % 100;
+    int children_amount_ = 1;
     int children_health_ = random() % 100;
 
     Bot() = delete;

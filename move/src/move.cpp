@@ -21,6 +21,7 @@ void move(Bot& bot, Map& map) {
         }
     );
 
+    bot.health_ -= 20;
     bot.position_ = positions[bot.intelligence_ * positions.size() / 100];
 
     map[bot.position_].bots_.push_back(&bot);
