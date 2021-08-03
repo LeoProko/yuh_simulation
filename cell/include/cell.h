@@ -1,13 +1,14 @@
 #pragma once
 
 #include <deque>
+#include <list>
 
 #include "bot.h"
 #include "position.h"
 
 class Cell {
 private:
-    void reproduce();
+    void reproduce(std::list<Bot>& all_bots);
 
     void split_food();
 
@@ -21,7 +22,7 @@ public:
 
     Cell() = default;
 
-    void do_all();
+    void do_all(std::list<Bot>& all_bots);
 
     void add_bot(Bot& bot);
 };

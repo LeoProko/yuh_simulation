@@ -1,20 +1,27 @@
 #include "map.h"
 #include "bot.h"
 
-Map::Map(int size, int bots_amount, int food_amount)
+Map::Map(std::list<Bot>& all_bots, int size, int bots_amount, int food_iter)
     : map_(size, std::vector<Cell>(size))
     , size_(size)
     , bots_amount_(bots_amount)
-    , food_amount_(food_amount) {
-    spawn_bots(bots_amount_);
+    , food_iter_(food_iter) {
+    spawn_bots(all_bots);
     respawn_food();    
 }
 
-void Map::spawn_bots(int bots_amount) {
-    for (int i = 0; i < bots_amount; ++i) {
-        // нужно, вроде, переделать на
-        // run->all_bots.emplace_back(size_);
-        map_[rand() % size_][rand() % size_].bots_.push_back(Bot(size_));
+std::vector<Cell>& Map::operator[](const int i) {
+    return map_[i];
+}
+
+Cell& Map::operator[](const Position& position) {
+    return map_[position.x][position.y];
+}
+
+void Map::spawn_bots(std::list<Bot>& all_bots) {
+    for (int i = 0; i < bots_amount_; ++i) {
+        all_bots.push_back(Bot(size_));
+        (*this)[all_bots.back().position_].bots_.push_back(&all_bots.back());
     }
 }
 
@@ -25,8 +32,10 @@ void Map::respawn_food() {
         }
     }
 
-    for (int i = 0; i < food_amount_; ++i) {
-        map_[rand() % size_][rand() % size_].food_counter_ = std::rand() % 201;
+    for (int i = 0; i < food_iter_; ++i) {
+        int added_food = random() % 10;
+        food_amount_ += added_food;
+        map_[random() % size_][random() % size_].food_counter_ = added_food;
     }
 }
 
@@ -36,48 +45,4 @@ int Map::size() const {
 
 int Map::bots_amount() const {
     return bots_amount_;
-}
-
-std::vector<Cell>& Map::operator[](const int i) {
-    return map_[i];
-}
-
-Map::Iterator::Iterator(Map& map, int row, int column)
-    : map_(map)
-    , iter_row_(row)
-    , iter_column_(column) {}
-
-Cell& Map::Iterator::operator*() {
-    return map_[iter_row_][iter_column_];
-}
-
-Map::Iterator& Map::Iterator::operator++() {
-    ++iter_column_;
-    if (iter_column_ == map_.size_) {
-        iter_column_ = 0;
-        ++iter_row_;
-    }
-    return *this;
-}
-
-Map::Iterator Map::Iterator::operator++(int) {
-    Iterator temp = *this;
-    ++(*this);
-    return temp;
-}
-
-bool Map::Iterator::operator==(Iterator other) const {
-    return iter_row_ == other.iter_row_ && iter_column_ == other.iter_column_;
-}
-
-bool Map::Iterator::operator!=(Iterator other) const {
-    return !(*this == other);
-}
-
-Map::Iterator Map::begin() {
-    return Iterator(*this);
-}
-
-Map::Iterator Map::end() {
-    return Iterator(*this, size_, 0);
 }
