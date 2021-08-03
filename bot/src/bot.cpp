@@ -1,10 +1,9 @@
 #include "bot.h"
 
 Bot::Bot(int map_size)
-    : position_(random() % map_size, random() % map_size)
-    , health_(random() % 101) {
-    fill_genes_iter();
-    calibrate();
+    : position_(random() % map_size, random() % map_size) {
+  fill_genes_iter();
+  calibrate();
 }
 
 Bot::Bot(const Bot* mother, const Bot* father)
