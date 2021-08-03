@@ -27,8 +27,6 @@ void Run::run(int map_size, int bots_amount, int days_amount) {
       today_map_[bot.position_].bots_.push_back(&bot);
     }
 
-    std::cout << "Move completed\n";
-
     for (auto& bot : all_bots) {
       today_map_[bot.position_].do_all();
       ++passes_amount;
