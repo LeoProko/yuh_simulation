@@ -3,6 +3,7 @@
 #include "bot.h"
 #include "cell.h"
 #include "position.h"
+#include "rand.h"
 
 #include <list>
 #include <vector>

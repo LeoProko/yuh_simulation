@@ -1,5 +1,4 @@
 #include "map.h"
-#include "bot.h"
 
 Map::Map(
         int size,
