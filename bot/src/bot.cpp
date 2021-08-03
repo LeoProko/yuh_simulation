@@ -1,7 +1,7 @@
 #include "bot.h"
 
 Bot::Bot(int map_size)
-    : position_(std::rand() % map_size, std::rand() % map_size) {
+    : position_(random() % map_size, random() % map_size) {
   fill_genes_iter();
   calibrate();
 }
