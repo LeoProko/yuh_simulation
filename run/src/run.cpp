@@ -26,7 +26,7 @@ void Run::run(int map_size, int bots_amount, int days_amount) {
             ++passes_amount;
         }
         for (auto& cell : today_map_) {
-            cell.do_all();
+            cell.do_all(all_bots);
             ++passes_amount;
         }
     }

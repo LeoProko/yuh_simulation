@@ -1,25 +1,25 @@
 #pragma once
 
-#include <cstdlib>
 #include <algorithm>
+#include <random>
 
 #include "position.h"
 
 class Bot {
 public:
     Position position_;
-
     int genes_amount_ = 5;
+    std::mt19937 random;
 
     // Characteristics
     int health_ = 100;  // from 0 to 100
 
     // Genome
-    int militancy_ = std::rand() % 101;  // from 0 to 100
-    int attractiveness_ = std::rand() % 101;
-    int intelligence_ = std::rand() % 101;
-    int childern_amount_ = std::rand() % 101;
-    int children_health_ = std::rand() % 101;
+    int militancy_ = random() % 101;  // from 0 to 100
+    int attractiveness_ = random() % 101;
+    int intelligence_ = random() % 101;
+    int childern_amount_ = random() % 101;
+    int children_health_ = random() % 101;
 
     std::vector<int*> genes_iter_;
 

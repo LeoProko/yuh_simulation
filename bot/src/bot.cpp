@@ -1,12 +1,11 @@
 #include "bot.h"
 
 Bot::Bot(int map_size)
-    : position_(std::rand() % map_size, std::rand() % map_size)
-    , health_(std::rand() % 101) {
-
+    : position_(random() % map_size, random() % map_size)
+    , health_(random() % 101) {
     fill_genes_iter();
     for (int i = 0; i < genes_amount_; ++i) {
-        *genes_iter_[i] = std::rand() % 101;
+        *genes_iter_[i] = random() % 101;
     }
     calibrate();
 }

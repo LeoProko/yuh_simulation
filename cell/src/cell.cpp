@@ -1,18 +1,17 @@
 #include "cell.h"
 
-void Cell::do_all() {
-    reproduce();
+void Cell::do_all(std::list<Bots>& all_bots) {
+    reproduce(all_bots);
     split_food();    
 }
 
-void Cell::reproduce() {
+void Cell::reproduce(std::list<Bots>& all_bots) {
     if (bots_.size() > 1) {
         std::sort(bots_.rbegin(), bots_.rend());
-        
         Bot* mother = *bots_.begin();
         Bot* father = *(++bots_.begin());
         for (int i = 0; i < (mother->childern_amount_ + father->childern_amount_) / 2; ++i) {
-            // run->all_bots.emplace_back(mother, father);
+            all_bots.emplace_back(mother, father);
         }
     }
 }
