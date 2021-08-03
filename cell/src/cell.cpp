@@ -7,7 +7,7 @@ void Cell::do_all() {
 
 void Cell::reproduce() {
     if (bots_.size() > 1) {
-        std::sort(bots_.begin(), bots_.end(), [](Bot b1, Bot b2) { return b2 < b1; });
+        std::sort(bots_.begin(), bots_.end(), [](const Bot& b1, const Bot& b2) { return b2 < b1; });
         
         Bot* mother = *bots_.begin();
         Bot* father = *(++bots_.begin());
@@ -18,8 +18,14 @@ void Cell::reproduce() {
 }
 
 void Cell::split_food() {
-    for (auto& b : bots_) {
-        int tmp = b->militancy_ * 0.6 + b->health_ * 0.4;
-        b->health_ = std::min(100, b->health_ + tmp / total_health);
+    for (auto& bot : bots_) {
+        int current_coef = bot->militancy_ * 0.6 + bot->health_ * 0.4;
+        bot->health_ = std::min(100, bot->health_ + current_coef / total_coef_);
     }
+}
+
+void Cell::add_bot(Bot& bot) {
+    bots_.push_back(&bot);
+    total_coef_ += bot.militancy_ * 0.6 + bot.health_ * 0.4;
+    ++bot_counter_;
 }
