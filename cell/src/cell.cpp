@@ -25,7 +25,7 @@ void Cell::split_food() {
         if (total_coef_ != 0) {
             current_coef /= total_coef_;
         }
-        bot->health_ = std::min(100, bot->health_ + current_coef);
+        bot->health_ = std::min(100, bot->health_ + current_coef * food_counter_);
     }
 }
 

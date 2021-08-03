@@ -5,7 +5,10 @@ void Run::init(std::list<Bot>& all_bots, int map_size, int bots_amount, int days
     map_size_ = map_size;
     bots_amount_ = bots_amount;
     days_amount_ = days_amount;
-    today_map_ = Map(all_bots, map_size_, bots_amount_, bots_amount_);
+    today_map_ = Map(map_size_, bots_amount_, bots_amount_);
+    for (int i = 0; i < bots_amount_; ++i) {
+        all_bots.emplace_back(map_size_);
+    }
     std::cout << "INITIALIZATION END\n";
 }
 

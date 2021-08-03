@@ -5,7 +5,6 @@
 #include "position.h"
 
 #include <list>
-#include <random>
 #include <vector>
 
 class Map {
@@ -14,7 +13,6 @@ private:
     int size_;
     int bots_amount_;
     int food_iter_;
-    std::mt19937 random_;
     int food_amount_ = 0;
 
     void spawn_bots(std::list<Bot>& all_bots);
@@ -23,7 +21,6 @@ public:
     Map() = default;
 
     Map(
-        std::list<Bot>& all_bots,
         int size,
         int bots_amount = 0,
         int food_iter = 0
