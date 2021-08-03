@@ -9,7 +9,6 @@
 class Bot {
 public:
     Position position_;
-    int genes_amount_ = 5;
 
     // Characteristics
     int health_ = 100;  // from 0 to 100
