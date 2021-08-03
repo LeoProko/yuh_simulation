@@ -7,7 +7,7 @@ void Cell::do_all() {
 
 void Cell::reproduce() {
     if (bots_.size() > 1) {
-        std::sort(bots_.begin(), bots_.end(), [](const Bot& b1, const Bot& b2) { return b2 < b1; });
+        std::sort(bots_.rbegin(), bots_.rend());
         
         Bot* mother = *bots_.begin();
         Bot* father = *(++bots_.begin());
