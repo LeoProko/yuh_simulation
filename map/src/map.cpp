@@ -20,8 +20,8 @@ Cell& Map::operator[](const Position& position) {
 
 void Map::spawn_bots(std::list<Bot>& all_bots) {
     for (int i = 0; i < bots_amount_; ++i) {
-        all_bots.push_back(Bot(size_));
-        (*this)[all_bots.back().position_].bots_.push_back(&all_bots.back());
+        all_bots.emplace_back(size_);
+        (*this)[all_bots.back().position_].add_bot(all_bots.back());
     }
 }
 

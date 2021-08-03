@@ -23,10 +23,8 @@ void Run::run(int map_size, int bots_amount, int days_amount) {
     for (int today = 1; today <= days_amount_; ++today) {
         std::cout << "Day number " << today << "\n";
         for (auto bot_iter = all_bots.begin(); bot_iter != all_bots.end();) {
-            std::cout << "BOT " << bot_iter->children_amount_ << "\n";
             if (bot_iter->health_ > 0) {
                 move(*bot_iter, today_map_);
-                today_map_[bot_iter->position_].bots_.push_back(&*bot_iter);
                 ++bot_iter;
             } else {
                 auto bot_iter_to_erase = bot_iter++;
@@ -42,6 +40,7 @@ void Run::run(int map_size, int bots_amount, int days_amount) {
         for (const auto& new_bot : new_bots) {
             all_bots.push_back(new_bot);
         }
+        today_map_.respawn_food();
         std::cout << "\tNumber of bots today: " << all_bots.size() << "\n";
     }
     std::cout << "Passes amount = " << passes_amount << "\n";

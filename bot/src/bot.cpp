@@ -3,34 +3,27 @@
 
 Bot::Bot(int map_size)
     : position_(random() % map_size, random() % map_size) {
-    fill_genes_iter();
-    calibrate();
+//    calibrate();
 }
 
 Bot::Bot(const Bot* mother, const Bot* father)
     : position_(mother->position_.x, mother->position_.y)
     , health_((mother->children_health_ + father->children_health_) / 2) {
-    fill_genes_iter();
-    for (int i = 0; i < genes_amount_; ++i) {
-        *genes_iter_[i] = (*mother->genes_iter_[i] + *father->genes_iter_[i]) / 2;
-    }
-    calibrate();
-}
 
-void Bot::fill_genes_iter() {
-  genes_iter_.push_back(&militancy_);
-  genes_iter_.push_back(&attractiveness_);
-  genes_iter_.push_back(&intelligence_);
-  genes_iter_.push_back(&children_amount_);
-  genes_iter_.push_back(&children_health_);
+    militancy_ = (mother->militancy_ + father->militancy_) / 2;
+    attractiveness_ = (mother->attractiveness_ + father->attractiveness_) / 2;
+    intelligence_ = (mother->intelligence_ + father->intelligence_) / 2;
+    children_amount_ = (mother->children_amount_ + father->children_amount_) / 2;
+    children_health_ = (mother->children_health_ + father->children_health_) / 2;
+//    calibrate();
 }
 
 void Bot::calibrate() {
-    float coeff = 50. * genes_amount_ /
+    double coefficient = 50. * genes_amount_ /
                 (militancy_ + intelligence_ + attractiveness_ +
                  children_amount_ + children_health_);
     for (int i = 0; i < genes_amount_; ++i) {
-        *genes_iter_[i] *= coeff;
+        *genes_iter_[i] *= coefficient;
         *genes_iter_[i] = std::min(std::max(*genes_iter_[i], 0), 99);
     }
 }

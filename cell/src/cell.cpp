@@ -2,7 +2,10 @@
 
 void Cell::do_all(std::list<Bot>& all_bots) {
     reproduce(all_bots);
-    split_food();    
+    split_food();
+    bots_.clear();
+    bot_counter_ = 0;
+    total_coef_ = 0;
 }
 
 void Cell::reproduce(std::list<Bot>& all_bots) {

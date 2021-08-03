@@ -19,12 +19,12 @@ private:
 
     void spawn_bots(std::list<Bot>& all_bots);
 
-    void respawn_food();
-
 public:
     Map() = default;
 
     Map(std::list<Bot>& all_bots, int size, int bots_amount = 0, int food_iter = 0);
+
+    void respawn_food();
 
     int size() const;
 
