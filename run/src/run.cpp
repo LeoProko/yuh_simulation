@@ -28,6 +28,7 @@ void Run::run(int map_size, int bots_amount, int days_amount) {
     int bar_width = 70;
     std::cout << "\n";
     for (int today = 1; today <= days_amount_; ++today) {
+        progress += progress_scale;
         std::cout << "[";
         int pos = bar_width * progress;
         for (int i = 0; i < bar_width; ++i) {
@@ -36,7 +37,6 @@ void Run::run(int map_size, int bots_amount, int days_amount) {
             else std::cout << " ";
         }
         std::cout << "] " << int(progress * 100.0) << " %\n";
-        progress += progress_scale;
 
         std::cout << "Day number " << today << "\n";
         for (auto bot_iter = all_bots.begin(); bot_iter != all_bots.end();) {
