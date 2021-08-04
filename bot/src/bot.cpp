@@ -1,19 +1,23 @@
 #include "bot.h"
-#include <iostream>
 
 Bot::Bot(int map_size)
-    : position_(Rand::random_() % map_size, Rand::random_() % map_size) {
+    : position_(Rand::random() % map_size, Rand::random() % map_size) {
     calibrate();
 }
 
 Bot::Bot(const Bot* mother, const Bot* father)
-: position_(Rand::random_() % 5, Rand::random_() % 5)
+: position_(mother->position_)
     , health_((mother->children_health_ + father->children_health_) / 2) {
-    militancy_ = (mother->militancy_ + father->militancy_) / 2 + std::rand() % mutation - mutation / 2;
-    attractiveness_ = (mother->attractiveness_ + father->attractiveness_) / 2 + std::rand() % mutation - mutation / 2;
-    intelligence_ = (mother->intelligence_ + father->intelligence_) / 2 + std::rand() % mutation - mutation / 2;
-    children_amount_ = (mother->children_amount_ + father->children_amount_) / 2 + std::rand() % mutation - mutation / 2;
-    children_health_ = (mother->children_health_ + father->children_health_) / 2 + std::rand() % mutation - mutation / 2;
+    militancy_ = (mother->militancy_ + father->militancy_) / 2 +
+        Rand::random() % mutation - mutation / 2;
+    attractiveness_ = (mother->attractiveness_ + father->attractiveness_) / 2 +
+        Rand::random() % mutation - mutation / 2;
+    intelligence_ = (mother->intelligence_ + father->intelligence_) / 2 +
+        Rand::random() % mutation - mutation / 2;
+    children_amount_ = (mother->children_amount_ + father->children_amount_) / 2 +
+        Rand::random() % mutation - mutation / 2;
+    children_health_ = (mother->children_health_ + father->children_health_) / 2 +
+        Rand::random() % mutation - mutation / 2;
     calibrate();
 }
 
@@ -30,6 +34,15 @@ void Bot::calibrate() {
 }
 
 bool operator<(const Bot& first, const Bot& second) {
-    return first.militancy_ + first.intelligence_ + first.children_amount_ + first.children_health_ <
-        second.militancy_ + second.intelligence_ + second.children_amount_ + second.children_health_;
+    return first.militancy_ +
+        first.intelligence_ +
+        first.children_amount_ +
+        first.children_health_ +
+        first.attractiveness_
+        <
+        second.militancy_ +
+        second.intelligence_ +
+        second.children_amount_ +
+        second.children_health_ +
+        second.attractiveness_;
 }

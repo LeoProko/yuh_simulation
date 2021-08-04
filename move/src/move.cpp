@@ -21,8 +21,9 @@ void move(Bot& bot, Map& map, int damage) {
 //        }
 //    );
 
+    ++bot.lifetime_;
     bot.health_ -= damage;
-//    bot.position_ = positions[bot.intelligence_ * positions.size() / 100];
+    //bot.position_ = positions[bot.intelligence_ * positions.size() / 100];
     bot.position_ = positions[Rand::random_() % positions.size()];
 
     map[bot.position_].add_bot(bot);
