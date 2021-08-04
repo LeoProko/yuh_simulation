@@ -23,7 +23,7 @@ void Cell::reproduce(std::list<Bot>& all_bots) {
 
 void Cell::split_food() {
     for (auto& bot : bots_) {
-        double current_coef = bot->militancy_ * 0 + bot->intelligence_ * 1.;
+        double current_coef = bot->militancy_;
         if (total_coef_ != 0) {
             current_coef /= total_coef_;
         }
@@ -33,6 +33,6 @@ void Cell::split_food() {
 
 void Cell::add_bot(Bot& bot) {
     bots_.push_back(&bot);
-    total_coef_ += bot.militancy_ * 0 + bot.intelligence_ * 1.;
+    total_coef_ += bot.militancy_;
     ++bot_counter_;
 }
