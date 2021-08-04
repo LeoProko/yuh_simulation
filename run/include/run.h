@@ -9,16 +9,22 @@
 #include "move.h"
 
 class Run {
-private:
+protected:
     int map_size_;
     int bots_amount_;
     int days_amount_;
+    double progress;
+    double progress_scale;
+    const int bar_width = 70;
     Map today_map_;
+    std::list<Bot> all_bots;
 
-    void init(std::list<Bot>& all_bots, int map_size, int bots_amount, int days_amount);
+    void init(int map_size, int bots_amount, int days_amount);
 
 public:
     Run() = default;
 
     void run(int map_size, int bots_amount, int days_amount);
+
+    void print_progress(int today);
 };
