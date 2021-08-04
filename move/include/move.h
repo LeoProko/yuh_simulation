@@ -3,4 +3,4 @@
 #include "bot.h"
 #include "map.h"
 
-void move(Bot& bot, Map& map);
+void move(Bot& bot, Map& map, int damage);

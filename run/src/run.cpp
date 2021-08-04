@@ -54,8 +54,8 @@ void Run::run(int map_size, int bots_amount, int days_amount) {
     for (int today = 1; today <= days_amount_; ++today) {
         print_progress(today);
         for (auto bot_iter = all_bots.begin(); bot_iter != all_bots.end();) {
-            if (bot_iter->health_ > 0) {
-                move(*bot_iter, today_map_);
+            if (bot_iter->health_ > damage_) {
+                move(*bot_iter, today_map_, damage_);
                 ++bot_iter;
             } else {
                 auto bot_iter_to_erase = bot_iter++;

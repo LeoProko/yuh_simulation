@@ -16,6 +16,7 @@ protected:
     double progress;
     double progress_scale;
     const int bar_width = 70;
+    const int damage_ = 20;
     Map today_map_;
     std::list<Bot> all_bots;
 

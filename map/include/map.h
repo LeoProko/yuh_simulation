@@ -5,6 +5,7 @@
 #include "position.h"
 #include "rand.h"
 
+#include <iostream>
 #include <list>
 #include <vector>
 
@@ -36,4 +37,5 @@ public:
     std::vector<Cell>& operator[](const int i);
 
     Cell& operator[](const Position& position);
+
 };

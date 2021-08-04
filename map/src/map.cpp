@@ -33,7 +33,6 @@ void Map::respawn_food() {
             map_[i][j].food_counter_ = 0;
         }
     }
-
     for (int i = 0; i < food_iter_; ++i) {
         int added_food = Rand::random_() % 10;
         food_amount_ += added_food;

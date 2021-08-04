@@ -1,6 +1,6 @@
 #include "move.h"
 
-void move(Bot& bot, Map& map) {
+void move(Bot& bot, Map& map, int damage) {
     std::vector<Position> positions;
     int left_border   = std::max(0,          bot.position_.x - 1);
     int right_border  = std::min(map.size(), bot.position_.x + 2);
@@ -21,7 +21,7 @@ void move(Bot& bot, Map& map) {
         }
     );
 
-    bot.health_ -= 5;
+    bot.health_ -= damage;
     bot.position_ = positions[bot.intelligence_ * positions.size() / 100];
 
     map[bot.position_].add_bot(bot);
