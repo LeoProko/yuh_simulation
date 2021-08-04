@@ -39,7 +39,7 @@ void Run::print_progress(int today) {
     }
     std::cout << "] " << static_cast<int>(progress * 100.0) << "%\n";
     std::cout << "Day number " << today << "\n";
-    std::cout << "Number of bots today: " << all_bots.size() << "\n";
+    std::cout << "Number of bots today: " << all_bots.size() << ":\n";
 }
 
 void Run::run(int map_size, int bots_amount, int days_amount) {
