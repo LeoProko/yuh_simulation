@@ -21,11 +21,11 @@ void Cell::reproduce(std::list<Bot>& all_bots) {
 
 void Cell::split_food() {
     for (auto& bot : bots_) {
-        int current_coef = bot->militancy_ * 0.6 + bot->health_ * 0.4;
+        double current_coef = bot->militancy_ * 0.6 + bot->health_ * 0.4;
         if (total_coef_ != 0) {
             current_coef /= total_coef_;
         }
-        bot->health_ = std::min(100, bot->health_ + current_coef * food_counter_);
+        bot->health_ = std::min(100, bot->health_ + static_cast<int>(current_coef * food_counter_));
     }
 }
 

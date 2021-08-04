@@ -12,7 +12,7 @@ private:
 
     void split_food();
 
-    int total_coef_ = 0;
+    double total_coef_ = 0;
 
 public:
     int bot_counter_ = 0;

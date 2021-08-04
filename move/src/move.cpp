@@ -13,16 +13,17 @@ void move(Bot& bot, Map& map, int damage) {
         }     
     }
 
-    std::sort(
-        positions.begin(), 
-        positions.end(), 
-        [&] (const Position& first, const Position& second) {
-            return map[first].food_counter_ < map[second].food_counter_;
-        }
-    );
+//    std::sort(
+//        positions.begin(),
+//        positions.end(),
+//        [&] (const Position& first, const Position& second) {
+//            return map[first].food_counter_ < map[second].food_counter_;
+//        }
+//    );
 
     bot.health_ -= damage;
-    bot.position_ = positions[bot.intelligence_ * positions.size() / 100];
+//    bot.position_ = positions[bot.intelligence_ * positions.size() / 100];
+    bot.position_ = positions[Rand::random_() % positions.size()];
 
     map[bot.position_].add_bot(bot);
 }

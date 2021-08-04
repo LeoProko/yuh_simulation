@@ -7,7 +7,7 @@ void Run::init(int map_size, int bots_amount, int days_amount) {
     days_amount_ = days_amount;
     progress = 0.;
     progress_scale = 1. / days_amount_;
-    today_map_ = Map(map_size_, bots_amount_, bots_amount_);
+    today_map_ = Map(map_size_, bots_amount_, bots_amount_ * bots_amount_);
     for (int i = 0; i < bots_amount_; ++i) {
         all_bots.emplace_back(map_size_);
     }
@@ -52,7 +52,44 @@ void Run::run(int map_size, int bots_amount, int days_amount) {
     int64_t passes_amount = 0;
 
     for (int today = 1; today <= days_amount_; ++today) {
-        print_progress(today);
+//        print_progress(today);
+        if (today % 100 == 0) {
+            std::cout << today << '\n';
+            int avg_militancy = 0;
+            for (auto& bot : all_bots) {
+                avg_militancy += bot.militancy_;
+            }
+            avg_militancy /= all_bots.size();
+            std::cout << "average militancy: " << avg_militancy << '\n';
+
+            int avg_children_amount = 0;
+            for (auto& bot : all_bots) {
+                avg_children_amount += bot.children_amount_;
+            }
+            avg_children_amount /= all_bots.size();
+            std::cout << "average children amount: " << avg_children_amount << '\n';
+
+            int avg_children_health = 0;
+            for (auto& bot : all_bots) {
+                avg_children_health += bot.children_health_;
+            }
+            avg_children_health /= all_bots.size();
+            std::cout << "average children health: " << avg_children_health << '\n';
+
+            int avg_health = 0;
+            for (auto& bot : all_bots) {
+                avg_health += bot.health_;
+            }
+            avg_health /= all_bots.size();
+            std::cout << "average health: " << avg_health << '\n';
+
+            int avg_intelligence = 0;
+            for (auto& bot : all_bots) {
+                avg_intelligence += bot.intelligence_;
+            }
+            avg_intelligence /= all_bots.size();
+            std::cout << "average intelligence: " << avg_intelligence << '\n';
+        }
         for (auto bot_iter = all_bots.begin(); bot_iter != all_bots.end();) {
             if (bot_iter->health_ > damage_) {
                 move(*bot_iter, today_map_, damage_);
@@ -78,5 +115,6 @@ void Run::run(int map_size, int bots_amount, int days_amount) {
     if (all_bots.size() == 0) {
         std::cout << "SIMULATION FAILED. ALL BOTS DEAD\n";
     }
+
     std::cout << "Passes amount = " << passes_amount << "\n";
 }
