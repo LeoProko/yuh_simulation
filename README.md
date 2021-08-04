@@ -90,9 +90,9 @@ git push
 
 ## Сборка
 
-Запустите файл make_and_run.sh
+Запустите файл assembly.sh
 ```bash
-./make_and_run.sh
+./assembly.sh
 ```
 
 Этот файл сотосит из команд
@@ -102,6 +102,18 @@ mkdir build
 cd build
 cmake ..
 make -j
-./run/bin/run
 cd ..
+```
+
+## Запуск
+
+Запустите файл start_simulation.sh
+```bash
+./start_simulation.sh
+```
+
+Этот файл сотосит из команд
+
+```bash
+./buld/main/bin/main
 ```

@@ -1,19 +1,34 @@
 #pragma once
 
-#include <cstdlib>
+#include <algorithm>
+#include <random>
 
 #include "position.h"
+#include "rand.h"
 
 class Bot {
 public:
     Position position_;
+    const int mutation = 10;
+    int lifetime_ = 0;
+    int genes_amount_ = 4;
 
-    // Genome
+    // Characteristics
     int health_ = 100;  // from 0 to 100
-    int food_amount_ = 1;  // from 0 to MAX_INT
-    int militancy_ = 50;  // from 0 to 100
+
+    // Genome from 0 to 99
+    int militancy_       = Rand::random_() % 100;
+    int intelligence_    = Rand::random_() % 100;
+    int children_amount_ = Rand::random_() % 100;
+    int children_health_ = Rand::random_() % 100;
 
     Bot() = delete;
 
-    Bot(int size);
+    Bot(int map_size);
+
+    Bot(const Bot* mother, const Bot* father);
+
+    void calibrate();
+
+    friend bool operator<(const Bot& first, const Bot& second);
 };
