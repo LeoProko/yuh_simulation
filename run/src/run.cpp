@@ -35,12 +35,12 @@ void Run::print_average() const {
     avg_children_health /= all_bots.size();
     avg_health /= all_bots.size();
     avg_lifetime /= all_bots.size();
-    std::cout << "average militancy: " << avg_militancy << '\n';
-    std::cout << "average intelligence: " << avg_intelligence << '\n';
-    std::cout << "average children amount: " << avg_children_amount << '\n';
-    std::cout << "average children health: " << avg_children_health << '\n';
-    std::cout << "average health: " << avg_health << '\n';
-    std::cout << "average lifetime: " << avg_lifetime << '\n';
+    std::cout << "average militancy: " << avg_militancy << " \n";
+    std::cout << "average intelligence: " << avg_intelligence << " \n";
+    std::cout << "average children amount: " << avg_children_amount << " \n";
+    std::cout << "average children health: " << avg_children_health << " \n";
+    std::cout << "average health: " << avg_health << " \n";
+    std::cout << "average lifetime: " << avg_lifetime << " \n";
 }
 
 void Run::print_progress(int today) {
@@ -66,7 +66,7 @@ void Run::print_progress(int today) {
     }
     std::cout << "] " << static_cast<int>(progress * 100.0) << "%\n";
     std::cout << "Day number " << today << "\n";
-    std::cout << "Number of bots today: " << all_bots.size() << "\n";
+    std::cout << "Number of bots today: " << all_bots.size() << " \n";
     print_average();
 }
 

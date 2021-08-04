@@ -24,7 +24,20 @@ void move(Bot& bot, Map& map, int damage) {
     ++bot.lifetime_;
     bot.health_ -= damage;
     //bot.position_ = positions[bot.intelligence_ * positions.size() / 100];
-    bot.position_ = positions[Rand::random_() % positions.size()];
+    //bot.position_ = positions[Rand::random() % positions.size()];
+    bot.position_ = positions[
+        std::min(
+            static_cast<int>(positions.size()) - 1,
+            std::max(
+                0,
+                static_cast<int>(
+                    bot.intelligence_ * positions.size() / 100 +
+                    (Rand::random() % static_cast<int>(0.3 * positions.size())) -
+                    (0.3 * positions.size()) / 2
+                )
+            )
+        )
+    ];
 
     map[bot.position_].add_bot(bot);
 }
