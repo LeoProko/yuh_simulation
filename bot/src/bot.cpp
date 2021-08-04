@@ -3,7 +3,7 @@
 
 Bot::Bot(int map_size)
     : position_(Rand::random_() % map_size, Rand::random_() % map_size) {
-//    calibrate();
+    calibrate();
 }
 
 Bot::Bot(const Bot* mother, const Bot* father)
@@ -14,13 +14,19 @@ Bot::Bot(const Bot* mother, const Bot* father)
     intelligence_ = (mother->intelligence_ + father->intelligence_) / 2 + Rand::random_() % 4 - 2;
     children_amount_ = (mother->children_amount_ + father->children_amount_) / 2 + Rand::random_() % 4 - 2;
     children_health_ = (mother->children_health_ + father->children_health_) / 2 + Rand::random_() % 4 - 2;
-//    calibrate();
+    calibrate();
 }
 
 void Bot::calibrate() {
 //    double coefficient = 50. * genes_amount_ /
 //                (militancy_ + intelligence_ + attractiveness_ +
 //                 children_amount_ + children_health_);
+    
+    militancy_ = std::max(0, std::min(99, militancy_));
+    attractiveness_ = std::max(0, std::min(99, attractiveness_));
+    intelligence_ = std::max(0, std::min(99, intelligence_));
+    children_amount_ = std::max(0, std::min(99, children_amount_));
+    children_health_ = std::max(0, std::min(99, children_health_));
 }
 
 bool operator<(const Bot& first, const Bot& second) {

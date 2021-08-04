@@ -45,6 +45,9 @@ void Run::run(int map_size, int bots_amount, int days_amount) {
         }
         today_map_.respawn_food();
         std::cout << "\tNumber of bots today: " << all_bots.size() << "\n";
+        if (all_bots.size() == 0) {
+            break;
+        }
     }
     std::cout << "Passes amount = " << passes_amount << "\n";
     std::cout << "RUN END\n";
