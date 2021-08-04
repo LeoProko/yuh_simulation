@@ -32,8 +32,8 @@ void move(Bot& bot, Map& map, int damage) {
                 0,
                 static_cast<int>(
                     bot.intelligence_ * positions.size() / 100 +
-                    (Rand::random() % static_cast<int>(0.3 * positions.size())) -
-                    (0.3 * positions.size()) / 2
+                    (Rand::random() % static_cast<int>(0.4 * positions.size())) -
+                    (0.4 * positions.size()) / 2
                 )
             )
         )
