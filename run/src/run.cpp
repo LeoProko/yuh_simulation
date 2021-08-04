@@ -23,7 +23,21 @@ void Run::run(int map_size, int bots_amount, int days_amount) {
     init(all_bots, map_size, bots_amount, days_amount);
     int64_t passes_amount = 0;
 
+    double progress = 0.;
+    double progress_scale = 1. / days_amount_;
+    int bar_width = 70;
+    std::cout << "\n";
     for (int today = 1; today <= days_amount_; ++today) {
+        std::cout << "[";
+        int pos = bar_width * progress;
+        for (int i = 0; i < bar_width; ++i) {
+            if (i < pos) std::cout << "=";
+            else if (i == pos) std::cout << ">";
+            else std::cout << " ";
+        }
+        std::cout << "] " << int(progress * 100.0) << " %\n";
+        progress += progress_scale;
+
         std::cout << "Day number " << today << "\n";
         for (auto bot_iter = all_bots.begin(); bot_iter != all_bots.end();) {
             if (bot_iter->health_ > 0) {
@@ -44,10 +58,19 @@ void Run::run(int map_size, int bots_amount, int days_amount) {
             all_bots.push_back(new_bot);
         }
         today_map_.respawn_food();
-        std::cout << "\tNumber of bots today: " << all_bots.size() << "\n";
+        std::cout << "Number of bots today: " << all_bots.size() << "\r";
+        std::cout.flush();
+        std::cout << "\033[F\r";
+        std::cout.flush();
+        std::cout << "\033[F\r";
+        std::cout.flush();
         if (all_bots.size() == 0) {
             break;
         }
+    }
+    std::cout << "\n\n\n\n";
+    if (all_bots.size() == 0) {
+        std::cout << "SIMULATION FAILED\n\n";
     }
     std::cout << "Passes amount = " << passes_amount << "\n";
     std::cout << "RUN END\n";
