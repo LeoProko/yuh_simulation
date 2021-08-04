@@ -9,6 +9,7 @@
 class Bot {
 public:
     Position position_;
+    const int mutation = 10;
 
     // Characteristics
     int health_ = 100;  // from 0 to 100
