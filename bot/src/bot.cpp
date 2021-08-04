@@ -1,39 +1,43 @@
 #include "bot.h"
 
 Bot::Bot(int map_size)
-    : position_(random() % map_size, random() % map_size) {
-  fill_genes_iter();
-  calibrate();
-}
-
-Bot::Bot(const Bot* mother, const Bot* father)
-    : position_(mother->position_.x, mother->position_.y)
-    , health_((mother->children_health_ + father->children_health_) / 2) {
-    fill_genes_iter();
-    for (int i = 0; i < genes_amount_; ++i) {
-        *genes_iter_[i] = (*mother->genes_iter_[i] + *father->genes_iter_[i]) / 2;
-    }
+    : position_(Rand::random() % map_size, Rand::random() % map_size) {
     calibrate();
 }
 
-void Bot::fill_genes_iter() {
-  genes_iter_.push_back(&militancy_);
-  genes_iter_.push_back(&attractiveness_);
-  genes_iter_.push_back(&intelligence_);
-  genes_iter_.push_back(&childern_amount_);
-  genes_iter_.push_back(&children_health_);
+Bot::Bot(const Bot* mother, const Bot* father)
+    : position_(mother->position_)
+    , health_((mother->children_health_ + father->children_health_) / 2) {
+    militancy_ = (mother->militancy_ + father->militancy_) / 2 +
+        Rand::random() % mutation - mutation / 2;
+    intelligence_ = (mother->intelligence_ + father->intelligence_) / 2 +
+        Rand::random() % mutation - mutation / 2;
+    children_amount_ = (mother->children_amount_ + father->children_amount_) / 2 +
+        Rand::random() % mutation - mutation / 2;
+    children_health_ = (mother->children_health_ + father->children_health_) / 2 +
+        Rand::random() % mutation - mutation / 2;
+    calibrate();
 }
 
 void Bot::calibrate() {
-    float coeff = 50. * genes_amount_ /
-                (militancy_ + intelligence_ + attractiveness_ +
-                 childern_amount_ + children_health_);
-    for (int i = 0; i < genes_amount_; ++i) {
-        *genes_iter_[i] *= coeff;
-        *genes_iter_[i] = std::min(std::max(*genes_iter_[i], 0), 99);
-    }
+    double coefficient = 50. * genes_amount_ /
+               (militancy_ + intelligence_ +
+                children_amount_ + children_health_);
+    
+    militancy_ = std::max(0, std::min(99, static_cast<int>(militancy_ * coefficient)));
+    intelligence_ = std::max(0, std::min(99, static_cast<int>(intelligence_ * coefficient)));
+    children_amount_ = std::max(0, std::min(99, static_cast<int>(children_amount_ * coefficient)));
+    children_health_ = std::max(0, std::min(99, static_cast<int>(children_health_ * coefficient)));
 }
 
 bool operator<(const Bot& first, const Bot& second) {
-    return first.attractiveness_ < second.attractiveness_;
+    return first.militancy_ +
+        first.intelligence_ +
+        first.children_amount_ +
+        first.children_health_
+        <
+        second.militancy_ +
+        second.intelligence_ +
+        second.children_amount_ +
+        second.children_health_;
 }

@@ -1,6 +1,6 @@
 #include "move.h"
 
-void move(Bot& bot, Map& map) {
+void move(Bot& bot, Map& map, int damage) {
     std::vector<Position> positions;
     int left_border   = std::max(0,          bot.position_.x - 1);
     int right_border  = std::min(map.size(), bot.position_.x + 2);
@@ -13,15 +13,31 @@ void move(Bot& bot, Map& map) {
         }     
     }
 
-    std::sort(
-        positions.begin(), 
-        positions.end(), 
-        [&] (const Position& first, const Position& second) {
-            return map[first].food_counter_ < map[second].food_counter_;
-        }
-    );
+//    std::sort(
+//        positions.begin(),
+//        positions.end(),
+//        [&] (const Position& first, const Position& second) {
+//            return map[first].food_counter_ < map[second].food_counter_;
+//        }
+//    );
 
-    bot.position_ = positions[bot.intelligence_ * positions.size() / 100];
+    ++bot.lifetime_;
+    bot.health_ -= damage;
+    //bot.position_ = positions[bot.intelligence_ * positions.size() / 100];
+    //bot.position_ = positions[Rand::random() % positions.size()];
+    bot.position_ = positions[
+        std::min(
+            static_cast<int>(positions.size()) - 1,
+            std::max(
+                0,
+                static_cast<int>(
+                    bot.intelligence_ * positions.size() / 100 +
+                    (Rand::random() % static_cast<int>(0.4 * positions.size())) -
+                    (0.4 * positions.size()) / 2
+                )
+            )
+        )
+    ];
 
-    map[bot.position_].bots_.push_back(&bot);
+    map[bot.position_].add_bot(bot);
 }

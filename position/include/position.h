@@ -7,4 +7,6 @@ struct Position {
     Position() = delete;
 
     Position(int first, int second);
+
+    Position(const Position& other) = default;
 };
