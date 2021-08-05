@@ -1,12 +1,17 @@
 #include <iostream>
 
+#include "parameters.h"
 #include "run.h"
 
 int main() {
     Run run;
-    int map_size = 10;
-    int bots_amount = 100;
-    int days_amount = 5'000;
-    int food_amount = map_size * map_size;
-    run.run(map_size, bots_amount, days_amount, food_amount);
+    parameters::map_size      = 10;
+    parameters::bots_amount   = 100;
+    parameters::days_amount   = 5'000;
+    parameters::food_amount   = 100;
+    parameters::food_per_cell = 10;
+    parameters::damage        = 20;
+    parameters::mutation      = 10;
+    parameters::move_error    = 30;
+    run.run();
 }
