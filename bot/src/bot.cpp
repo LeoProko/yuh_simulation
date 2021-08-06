@@ -31,7 +31,7 @@ Bot::Bot(const Bot* mother, const Bot* father)
             parameters::random() % 100 < parameters::mutation;
     }
     if (mother->is_private_altruist_ && father->is_private_altruist_) {
-        is_private_altruist_ *= parameters::random() % 100 > parameters::mutation;
+        is_private_altruist_ = parameters::random() % 100 > parameters::mutation;
     } else if (mother->is_private_altruist_ || father->is_private_altruist_) {
         is_private_altruist_ = parameters::random() % 2 ||
             parameters::random() % 100 < parameters::mutation;
@@ -47,7 +47,7 @@ void Bot::calibrate() {
     
     militancy_ = std::max(0, std::min(99, static_cast<int>(militancy_ * coefficient)));
     intelligence_ = std::max(0, std::min(99, static_cast<int>(intelligence_ * coefficient)));
-    children_amount_ = std::max(0, std::min(9, static_cast<int>(children_amount_ * coefficient)));
+    children_amount_ = std::max(0, std::min(99, static_cast<int>(children_amount_ * coefficient)));
     children_health_ = std::max(0, std::min(99, static_cast<int>(children_health_ * coefficient)));
 }
 

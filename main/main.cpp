@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "parameters.h"
 #include "run.h"
 
@@ -8,7 +6,7 @@ int main() {
     parameters::map_size         = 20;
     parameters::bots_amount      = 500;
     parameters::altruists_amount = 250;
-    parameters::days_amount      = 1'000;
+    parameters::days_amount      = 3'000;
     parameters::food_amount      = 1'000;
     parameters::food_per_cell    = 10;
     parameters::enemies_amount   = 50;
