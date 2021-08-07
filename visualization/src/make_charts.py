@@ -14,9 +14,9 @@ def make_charts_from_json(json_name):
             print('Day number', day_number, 'has been processed')
         bot_map = json.loads(bot_map)
         dx, dy = 1, 1
-        y, x = np.mgrid[slice(0, 10 + dy, dy),
-                        slice(0, 10 + dx, dx)]
         z = np.array(bot_map)
+        y, x = np.mgrid[slice(0, z.shape[0] + dy, dy),
+                        slice(0, z.shape[1] + dx, dx)]
         levels = MaxNLocator(nbins=15).tick_values(z.min(), z.max())
         cmap = plt.get_cmap('PiYG')
         norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
