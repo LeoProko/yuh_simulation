@@ -47,7 +47,7 @@ void Bot::calibrate() {
     
     militancy_ = std::max(0, std::min(99, static_cast<int>(militancy_ * coefficient)));
     intelligence_ = std::max(0, std::min(99, static_cast<int>(intelligence_ * coefficient)));
-    children_amount_ = std::max(0, std::min(99, static_cast<int>(children_amount_ * coefficient)));
+    children_amount_ = std::max(0, std::min(9, static_cast<int>(children_amount_ * coefficient)));
     children_health_ = std::max(0, std::min(99, static_cast<int>(children_health_ * coefficient)));
 }
 

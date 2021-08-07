@@ -19,8 +19,8 @@ public:
     int intelligence_         = parameters::random() % 100;
     int children_amount_      = parameters::random() % 100;
     int children_health_      = parameters::random() % 100;
-    bool is_altruist_ = false;
-    bool is_greenbeared_ = false;
+    bool is_altruist_         = false;
+    bool is_greenbeared_      = false;
     bool is_protected_        = false;
 
     Bot();

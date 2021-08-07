@@ -26,7 +26,7 @@ public:
     Map();
 
     void clean_and_respawn();
-
+  
     std::vector<Cell>& operator[](const int i);
 
     Cell& operator[](const Position& position);
