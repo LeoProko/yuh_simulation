@@ -16,6 +16,7 @@ void Run::print_average() const {
     int avg_intelligence = 0;
     int avg_children_amount = 0;
     int avg_children_health = 0;
+    int avg_vision = 0;
     int avg_health = 0;
     int avg_lifetime = 0;
     for (auto& bot : all_bots) {
@@ -23,6 +24,7 @@ void Run::print_average() const {
         avg_intelligence += bot.intelligence_;
         avg_children_amount += bot.children_amount_;
         avg_children_health += bot.children_health_;
+        avg_vision += bot.vision_;
         avg_health += bot.health_;
         avg_lifetime += bot.lifetime_;
     }
@@ -30,19 +32,21 @@ void Run::print_average() const {
     avg_intelligence /= all_bots.size();
     avg_children_amount /= all_bots.size();
     avg_children_health /= all_bots.size();
+    avg_vision /= all_bots.size();
     avg_health /= all_bots.size();
     avg_lifetime /= all_bots.size();
     std::cout << "Average militancy: " << avg_militancy << " \n";
     std::cout << "Average intelligence: " << avg_intelligence << " \n";
-    std::cout << "Average children amount: " << avg_children_amount << " \n";
+    std::cout << "Average children amount: " << avg_children_amount / 10 << " \n";
     std::cout << "Average children health: " << avg_children_health << " \n";
+    std::cout << "Average vision: " << 1 + avg_vision / 10 << " \n";
     std::cout << "Average health: " << avg_health << " \n";
     std::cout << "Average lifetime: " << avg_lifetime << " \n";
 }
 
 void Run::print_progress(int today) {
     if (progress - 0. >= 1e-6) {
-        for (int i = 0; i < 9; ++i) {
+        for (int i = 0; i < 10; ++i) {
             std::cout << "\033[F\r";
             std::cout.flush();
         }

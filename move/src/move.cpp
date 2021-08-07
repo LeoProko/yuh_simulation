@@ -1,11 +1,12 @@
 #include "move.h"
 
 void move(Bot& bot, Map& map) {
+    int bots_range = 1 + bot.vision_ / 10;
     std::vector<Position> positions;
-    int left_border   = std::max(0,                    bot.position_.x - 1);
-    int right_border  = std::min(parameters::map_size, bot.position_.x + 2);
-    int top_border    = std::max(0,                    bot.position_.y - 1);
-    int bottom_border = std::min(parameters::map_size, bot.position_.y + 2);
+    int left_border   = std::max(0,                    bot.position_.x - bots_range);
+    int right_border  = std::min(parameters::map_size, bot.position_.x + bots_range + 1);
+    int top_border    = std::max(0,                    bot.position_.y - bots_range);
+    int bottom_border = std::min(parameters::map_size, bot.position_.y + bots_range + 1);
 
     for (int i = left_border; i < right_border; ++i) {
         for (int j = top_border; j < bottom_border; ++j) {

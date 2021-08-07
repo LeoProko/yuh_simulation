@@ -9,7 +9,7 @@ class Bot {
 public:
     Position position_;
     int lifetime_ = 0;
-    int genes_amount_ = 4;
+    int genes_amount_ = 5;
 
     // Characteristics
     int health_ = 100;  // from 0 to 100
@@ -17,8 +17,9 @@ public:
     // Genome from 0 to 99
     int militancy_       = parameters::random() % 100;
     int intelligence_    = parameters::random() % 100;
-    int children_amount_ = parameters::random() % 10;
+    int children_amount_ = parameters::random() % 100;
     int children_health_ = parameters::random() % 100;
+    int vision_          = parameters::random() % 100;
 
     Bot();
 

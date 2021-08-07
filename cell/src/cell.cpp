@@ -15,7 +15,7 @@ void Cell::reproduce(std::list<Bot>& all_bots) {
         });
         Bot* mother = bots_.front();
         Bot* father = *(++bots_.begin());
-        for (int i = 0; i < (mother->children_amount_ + father->children_amount_) / 2; ++i) {
+        for (int i = 0; i < (mother->children_amount_ + father->children_amount_) / 20; ++i) {
             all_bots.emplace_back(mother, father);
         }
     }
