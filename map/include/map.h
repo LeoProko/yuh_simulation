@@ -16,13 +16,20 @@ private:
 
     void spawn_bots(std::list<Bot>& all_bots);
 
-public:
-    Map();
+    void clean();
 
     void respawn_food();
 
+    void respawn_enemies();
+
+public:
+    Map();
+
+    void clean_and_respawn();
+
     std::vector<Cell>& operator[](const int i);
 
-    Cell& operator[](const Position& position);
+    const std::vector<Cell>& operator[](const int i) const;
 
+    Cell& operator[](const Position& position);
 };

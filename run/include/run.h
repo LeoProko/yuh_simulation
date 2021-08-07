@@ -3,8 +3,10 @@
 #include <iostream>
 #include <list>
 #include <vector>
+#include <nlohmann/json.hpp>
 
 #include "bot.h"
+#include "file.h"
 #include "map.h"
 #include "move.h"
 #include "parameters.h"
@@ -14,8 +16,9 @@ protected:
     double progress;
     double progress_scale;
     const int bar_width = 70;
-    Map today_map_;
+    Map map_;
     std::list<Bot> all_bots;
+    File output_file_;
 
     void init();
 
