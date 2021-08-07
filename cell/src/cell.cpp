@@ -28,19 +28,20 @@ void Cell::split_food() {
 
 void Cell::altruists_activation() {
     for (const auto& bot : bots_in_cell_) {
-        if (bot->is_private_altruist_) {
+        if (bot->is_altruist_) {
             for (auto& neighbour : bots_in_cell_) {
-                if (neighbour->is_public_altruist_) {
+                if (neighbour->is_greenbeared_) {
                     neighbour->is_protected_ = true;
                 }
             }
+            return;
         }
     }
 }
 
 void Cell::enemy_activation() {
     for (auto& bot : bots_in_cell_) {
-        if ((bot->is_private_altruist_ && parameters::random() % 2) || !bot->is_protected_) {
+        if ((bot->is_altruist_ && parameters::random() % 2) || !bot->is_protected_) {
             bot->health_ = 0;
         }
         bot->is_protected_ = false;

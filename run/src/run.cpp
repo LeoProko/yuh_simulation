@@ -18,8 +18,9 @@ void Run::print_average() const {
     int avg_children_health = 0;
     int avg_health = 0;
     int avg_lifetime = 0;
-    int private_altruist_amount = 0;
-    int public_altruist_amount = 0;
+    int altruist_amount = 0;
+    int greenbeared_amount = 0;
+    int greenbeared_altruists_amount = 0;
     for (auto& bot : all_bots) {
         avg_militancy += bot.militancy_;
         avg_intelligence += bot.intelligence_;
@@ -27,8 +28,10 @@ void Run::print_average() const {
         avg_children_health += bot.children_health_;
         avg_health += bot.health_;
         avg_lifetime += bot.lifetime_;
-        private_altruist_amount += bot.is_private_altruist_;
-        public_altruist_amount += bot.is_public_altruist_;
+        altruist_amount += bot.is_altruist_;
+        greenbeared_amount += bot.is_greenbeared_;
+        greenbeared_altruists_amount += bot.is_altruist_ && bot.is_greenbeared_;
+
     }
     avg_militancy /= all_bots.size();
     avg_intelligence /= all_bots.size();
@@ -36,19 +39,20 @@ void Run::print_average() const {
     avg_children_health /= all_bots.size();
     avg_health /= all_bots.size();
     avg_lifetime /= all_bots.size();
-    std::cout << "Average militancy.........." << avg_militancy << "\n";
-    std::cout << "Average intelligence......." << avg_intelligence << "\n";
-    std::cout << "Average children amount...." << avg_children_amount << "\n";
-    std::cout << "Average children health...." << avg_children_health << "\n";
-    std::cout << "Average health............." << avg_health << "\n";
-    std::cout << "Average lifetime..........." << avg_lifetime << "\n";
-    std::cout << "Private altruists amount..." << private_altruist_amount << "\n";
-    std::cout << "Public altruists amount...." << public_altruist_amount << "\n";
+    std::cout << "Average militancy............." << avg_militancy << "\n";
+    std::cout << "Average intelligence.........." << avg_intelligence << "\n";
+    std::cout << "Average children amount......." << avg_children_amount << "\n";
+    std::cout << "Average children health......." << avg_children_health << "\n";
+    std::cout << "Average health................" << avg_health << "\n";
+    std::cout << "Average lifetime.............." << avg_lifetime << "\n";
+    std::cout << "Altruists amount.............." << altruist_amount << "\n";
+    std::cout << "Greenbeared amount............" << greenbeared_amount << "\n";
+    std::cout << "Greenbeared altruists amount.." << greenbeared_altruists_amount << "\n";
 }
 
 void Run::print_progress(int today) {
     if (progress - 0. >= 1e-6) {
-        for (int i = 0; i < 11; ++i) {
+        for (int i = 0; i < 12; ++i) {
             std::cout << "\033[F\x1b[2K";
             std::cout.flush();
         }
