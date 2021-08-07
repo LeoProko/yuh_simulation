@@ -20,16 +20,33 @@ void Map::spawn_bots(std::list<Bot>& all_bots) {
     }
 }
 
-void Map::respawn_food() {
+void Map::clean() {
     for (int i = 0; i < parameters::map_size; ++i) {
         for (int j = 0; j < parameters::map_size; ++j) {
             map_[i][j].food_counter_ = 0;
+            map_[i][j].is_enemy_ = false;
         }
     }
+}
+
+void Map::respawn_food() {
     for (int i = 0; i < parameters::food_amount; ++i) {
         int added_food = parameters::random() % 10;
         food_amount_ += added_food;
         map_[parameters::random() % parameters::map_size]
             [parameters::random() % parameters::map_size].food_counter_ = added_food;
     }
+}
+
+void Map::respawn_enemies() {
+    for (int i = 0; i < parameters::enemies_amount; ++i) {
+        map_[parameters::random() % parameters::map_size]
+            [parameters::random() % parameters::map_size].is_enemy_ = true;
+    }
+}
+
+void Map::clean_and_respawn() {
+    clean();
+    respawn_food();
+    respawn_enemies();
 }
