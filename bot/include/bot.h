@@ -1,15 +1,13 @@
 #pragma once
 
 #include <algorithm>
-#include <random>
 
+#include "parameters.h"
 #include "position.h"
-#include "rand.h"
 
 class Bot {
 public:
     Position position_;
-    const int mutation = 10;
     int lifetime_ = 0;
     int genes_amount_ = 4;
 
@@ -17,14 +15,12 @@ public:
     int health_ = 100;  // from 0 to 100
 
     // Genome from 0 to 99
-    int militancy_       = Rand::random_() % 100;
-    int intelligence_    = Rand::random_() % 100;
-    int children_amount_ = Rand::random_() % 100;
-    int children_health_ = Rand::random_() % 100;
+    int militancy_       = parameters::random() % 100;
+    int intelligence_    = parameters::random() % 100;
+    int children_amount_ = parameters::random() % 10;
+    int children_health_ = parameters::random() % 100;
 
-    Bot() = delete;
-
-    Bot(int map_size);
+    Bot();
 
     Bot(const Bot* mother, const Bot* father);
 

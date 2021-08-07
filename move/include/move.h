@@ -2,5 +2,6 @@
 
 #include "bot.h"
 #include "map.h"
+#include "parameters.h"
 
-void move(Bot& bot, Map& map, int damage);
+void move(Bot& bot, Map& map);

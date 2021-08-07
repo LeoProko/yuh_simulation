@@ -1,14 +1,7 @@
 #include "map.h"
 
-Map::Map(
-        int size,
-        int bots_amount,
-        int food_iter
-    )
-    : map_(size, std::vector<Cell>(size))
-    , size_(size)
-    , bots_amount_(bots_amount)
-    , food_iter_(food_iter) {
+Map::Map()
+    : map_(parameters::map_size, std::vector<Cell>(parameters::map_size)) {
     respawn_food();
 }
 
@@ -21,29 +14,22 @@ Cell& Map::operator[](const Position& position) {
 }
 
 void Map::spawn_bots(std::list<Bot>& all_bots) {
-    for (int i = 0; i < bots_amount_; ++i) {
-        all_bots.emplace_back(size_);
+    for (int i = 0; i < parameters::bots_amount; ++i) {
+        all_bots.emplace_back();
         (*this)[all_bots.back().position_].add_bot(all_bots.back());
     }
 }
 
 void Map::respawn_food() {
-    for (int i = 0; i < size_; ++i) {
-        for (int j = 0; j < size_; ++j) {
+    for (int i = 0; i < parameters::map_size; ++i) {
+        for (int j = 0; j < parameters::map_size; ++j) {
             map_[i][j].food_counter_ = 0;
         }
     }
-    for (int i = 0; i < food_iter_; ++i) {
-        int added_food = Rand::random() % 10;
+    for (int i = 0; i < parameters::food_amount; ++i) {
+        int added_food = parameters::random() % 10;
         food_amount_ += added_food;
-        map_[Rand::random() % size_][Rand::random() % size_].food_counter_ = added_food;
+        map_[parameters::random() % parameters::map_size]
+            [parameters::random() % parameters::map_size].food_counter_ = added_food;
     }
-}
-
-int Map::size() const {
-    return size_;
-}
-
-int Map::bots_amount() const {
-    return bots_amount_;
 }
