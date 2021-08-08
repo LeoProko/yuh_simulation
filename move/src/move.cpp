@@ -22,8 +22,7 @@ void move(Bot& bot, Map& map) {
         }
     );
 
-    ++bot.lifetime_;
-    bot.health_ -= parameters::damage;
+    Position old_position = bot.position_;
     //bot.position_ = positions[bot.intelligence_ * positions.size() / 100];
     //bot.position_ = positions[Rand::random() % positions.size()];
     bot.position_ = positions[
@@ -39,6 +38,18 @@ void move(Bot& bot, Map& map) {
             )
         )
     ];
+
+    int path_length = static_cast<int>(
+        sqrt(
+            (bot.position_.x - old_position.x) * 
+            (bot.position_.x - old_position.x) +
+            (bot.position_.y - old_position.y) * 
+            (bot.position_.y - old_position.y)
+        )
+    );
+
+    ++bot.lifetime_;
+    bot.health_ -= parameters::damage * path_length;
 
     map[bot.position_].add_bot(bot);
 }
