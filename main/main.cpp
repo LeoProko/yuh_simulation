@@ -6,7 +6,7 @@ int main() {
     parameters::map_size         = 100;
     parameters::bots_amount      = 1000;
     parameters::altruists_amount = 500;
-    parameters::days_amount      = 1'000;
+    parameters::days_amount      = 350;
     parameters::food_amount      = 1000;
     parameters::food_per_cell    = 1;
     parameters::enemies_amount   = 200;

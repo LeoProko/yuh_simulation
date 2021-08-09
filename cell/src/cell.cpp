@@ -43,7 +43,6 @@ void Cell::do_all(std::list<Bot>& bots) {
             enemy_activation();
         }
         bots_in_cell_.clear();
-        bot_counter_ = 0;
         total_coef_ = 0;
     }
 }
