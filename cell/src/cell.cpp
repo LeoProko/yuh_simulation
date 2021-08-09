@@ -2,14 +2,22 @@
 
 void Cell::reproduce(std::list<Bot>& bots) {
     if (bots_in_cell_.size() > 1) {
-        std::sort(bots_in_cell_.rbegin(), bots_in_cell_.rend(), [](Bot* first, Bot* second) {
-            return *first < *second;
-        });
+        std::sort(
+            bots_in_cell_.rbegin(),
+            bots_in_cell_.rend(),
+            [](Bot* first, Bot* second) {
+                return *first < *second;
+            }
+        );
         Bot* mother = bots_in_cell_.front();
         Bot* father = *(++bots_in_cell_.begin());
         for (int i = 0; i < (mother->children_amount_ + father->children_amount_) / (2 * 10); ++i) {
             bots.emplace_back(mother, father);
         }
+        mother->health_ -= parameters::damage *
+            (mother->children_amount_ / 10);
+        father->health_ -= parameters::damage *
+            (father->children_amount_ / 10);
     }
 }
 
@@ -20,9 +28,23 @@ void Cell::split_food() {
             current_coef /= total_coef_;
         }
         bot->health_ = std::min(
-            100,
+            100'000,
             bot->health_ + static_cast<int>(current_coef * food_counter_ * 100.)
         );
+    }
+}
+
+void Cell::do_all(std::list<Bot>& bots) {
+    if (bot_counter_ > 0) {
+        reproduce(bots);
+        split_food();
+        if (is_enemy_) {
+            altruists_activation();
+            enemy_activation();
+        }
+        bots_in_cell_.clear();
+        bot_counter_ = 0;
+        total_coef_ = 0;
     }
 }
 
@@ -46,17 +68,6 @@ void Cell::enemy_activation() {
         }
         bot->is_protected_ = false;
     }
-}
-
-void Cell::do_all(std::list<Bot>& bots) {
-    reproduce(bots);
-    split_food();
-    if (is_enemy_) {
-        altruists_activation();
-        enemy_activation();
-    }
-    bots_in_cell_.clear();
-    total_coef_ = 0;
 }
 
 void Cell::clean() {
