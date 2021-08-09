@@ -37,9 +37,9 @@ void Run::print_average() const {
     }
     avg_militancy /= all_bots.size();
     avg_intelligence /= all_bots.size();
-    avg_children_amount /= all_bots.size();
+    avg_children_amount /= all_bots.size() * 10;
     avg_children_health /= all_bots.size();
-    avg_vision = 1 + (avg_vision / all_bots.size()) / 10;
+    avg_vision = (avg_vision / all_bots.size()) / 10;
     avg_health /= all_bots.size();
     avg_lifetime /= all_bots.size();
     std::cout << "Average militancy............." << avg_militancy << "\n";
@@ -90,19 +90,23 @@ void Run::run() {
 
     for (int today = 0; today <= parameters::days_amount; ++today) {
         print_progress(today);
-        for (auto bot_iter = all_bots.begin(); bot_iter != all_bots.end();) {
+        for (auto bot_iter = all_bots.begin(); bot_iter != all_bots.end(); ++bot_iter) {
             if (bot_iter->health_ > parameters::damage) {
                 move(*bot_iter, map_);
-                ++bot_iter;
-            } else {
-                auto bot_iter_to_erase = bot_iter++;
-                all_bots.erase(bot_iter_to_erase);
             }
         }
         std::list<Bot> new_bots;
         for (auto& bot : all_bots) {
             map_[bot.position_].do_all(new_bots);
             ++passes_amount;
+        }
+        for (auto bot_iter = all_bots.begin(); bot_iter != all_bots.end();) {
+            if (bot_iter->health_ <= parameters::damage) {
+                auto bot_iter_to_erase = bot_iter++;
+                all_bots.erase(bot_iter_to_erase);
+            } else {
+                ++bot_iter;
+            }
         }
         for (const auto& new_bot : new_bots) {
             all_bots.push_back(new_bot);
