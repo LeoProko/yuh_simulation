@@ -29,7 +29,6 @@ File::~File() {
     file_.close();
 }
 
-
 void to_json(nlohmann::json& json_file, const Map& map) {
     json_file = nlohmann::json::array();
     for (int row = 0; row < parameters::map_size; ++row) {

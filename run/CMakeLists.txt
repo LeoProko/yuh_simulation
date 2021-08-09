@@ -6,6 +6,6 @@ target_link_libraries(${PROJECT_NAME}
     file
     map
     move
-    parameters
     nlohmann_json::nlohmann_json
+    parameters
 )

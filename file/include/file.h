@@ -27,4 +27,4 @@ public:
     ~File();
 };
 
-void to_json(nlohmann::json& j, const Map& map);
+void to_json(nlohmann::json& json_file, const Map& map);
