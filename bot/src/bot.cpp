@@ -12,7 +12,8 @@ Bot::Bot()
 Bot::Bot(const Bot* mother, const Bot* father)
     : position_(mother->position_)
     , health_((mother->children_health_ + mother->health_ +
-        father->children_health_ + father->health_) / (2 * mother->children_amount_ + father->children_amount_))
+        father->children_health_ + father->health_) /
+            (4 * (mother->children_amount_ + father->children_amount_) / 2))
     , militancy_((mother->militancy_ + father->militancy_) / 2 +
         parameters::random() % parameters::mutation - parameters::mutation / 2)
     , intelligence_((mother->intelligence_ + father->intelligence_) / 2 +
