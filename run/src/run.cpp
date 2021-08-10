@@ -18,7 +18,7 @@ void Run::init() {
     parameters_file_.print(std::string("children_health "));
     parameters_file_.print(std::string("health "));
     parameters_file_.print(std::string("lifetime "));
-    parameters_file_.print(std::string("altruist_amount "));
+    parameters_file_.print(std::string("altruists_amount "));
     parameters_file_.print(std::string("greenbeared_amount "));
     parameters_file_.print(std::string("greenbeared_altruists_amount\n"));
     std::cout << "INITIALIZATION COMPLETED\n";
@@ -32,7 +32,7 @@ void Run::print_average() {
     int avg_vision = 0;
     int avg_health = 0;
     int avg_lifetime = 0;
-    int altruist_amount = 0;
+    int altruists_amount = 0;
     int greenbeared_amount = 0;
     int greenbeared_altruists_amount = 0;
     for (auto& bot : all_bots) {
@@ -43,7 +43,7 @@ void Run::print_average() {
         avg_vision += bot.vision_;
         avg_health += bot.health_;
         avg_lifetime += bot.lifetime_;
-        altruist_amount += bot.is_altruist_;
+        altruists_amount += bot.is_altruist_;
         greenbeared_amount += bot.is_greenbeared_;
         greenbeared_altruists_amount += bot.is_altruist_ && bot.is_greenbeared_;
     }
@@ -61,7 +61,7 @@ void Run::print_average() {
     std::cout << "Average children health......." << avg_children_health << "\n";
     std::cout << "Average health................" << avg_health << "\n";
     std::cout << "Average lifetime.............." << avg_lifetime << "\n";
-    std::cout << "Altruists amount.............." << altruist_amount << "\n";
+    std::cout << "Altruists amount.............." << altruists_amount << "\n";
     std::cout << "Greenbeared amount............" << greenbeared_amount << "\n";
     std::cout << "Greenbeared altruists amount.." << greenbeared_altruists_amount << "\n";
     nlohmann::json json_parameters;
@@ -73,7 +73,7 @@ void Run::print_average() {
     json_parameters["children_health"] = avg_children_health;
     json_parameters["health"] = avg_health;
     json_parameters["lifetime"] = avg_lifetime;
-    json_parameters["altruist_amount"] = altruist_amount;
+    json_parameters["altruists_amount"] = altruists_amount;
     json_parameters["greenbeared_amount"] = greenbeared_amount;
     json_parameters["greenbeared_altruists_amount"] = greenbeared_altruists_amount;
     parameters_file_.print(json_parameters);

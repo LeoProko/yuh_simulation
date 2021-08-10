@@ -34,6 +34,7 @@ class MakeCharsFromJson:
             fig.set_size_inches(14, 12)
             ax.set_title('day number ' + str(day_number + 1))
             plt.savefig('charts/map/day_number_' + str(day_number).zfill(6) + '.jpg')
+            plt.clf()
             plt.close()
         print('Converting was successful')
 
@@ -50,6 +51,7 @@ class MakeCharsFromJson:
             for parameter in parameters:
                 average_parameters[parameter].append(parameters[parameter])
         days_amount = len(average_parameters[genes_list[0]])
+
         plt.figure(figsize=(20, 10))
         for gene in genes_list:
             plt.plot(range(days_amount), average_parameters[gene], label=gene)
@@ -59,12 +61,28 @@ class MakeCharsFromJson:
         plt.ylabel('Absolute parameter value')
         plt.ylim([0, 100])
         plt.savefig('charts/parameters.jpg')
+        plt.clf()
+        plt.close()
+
+        plt.figure(figsize=(20, 10))
+        plt.plot(range(days_amount), average_parameters['bots_amount'], label='bots_amount')
+        plt.plot(range(days_amount), average_parameters['altruists_amount'], label='altruists_amount')
+        plt.plot(range(days_amount), average_parameters['greenbeared_amount'], label='greenbeared_amount')
+        plt.plot(range(days_amount), average_parameters['greenbeared_altruists_amount'], label='greenbeared_altruists_amount')
+        plt.legend()
+        plt.title('Bots amount')
+        plt.xlabel('Day')
+        plt.ylabel('Bots amount')
+        plt.savefig('charts/bots_amount.jpg')
+        plt.clf()
+        plt.close()
+
         print('Converting was successful')
 
 def main():
     charts = MakeCharsFromJson()
-    charts.map('bots_amount')
     charts.parameters('parameters')
+    charts.map('bots_amount')
     print('Please, run make_video.sh')
 
 if __name__ == '__main__':

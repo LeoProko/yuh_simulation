@@ -3,15 +3,15 @@
 
 int main() {
     Run run;
-    parameters::map_size         = 100;
-    parameters::bots_amount      = 1'000;
-    parameters::altruists_amount = 500;
-    parameters::days_amount      = 300;
-    parameters::food_amount      = 300;
-    parameters::food_per_cell    = 2;
-    parameters::enemies_amount   = 100;
+    parameters::map_size         = 500;
+    parameters::bots_amount      = 50'000;
+    parameters::altruists_amount = 25'000;
+    parameters::days_amount      = 400;
+    parameters::food_amount      = 75'000;
+    parameters::food_per_cell    = 4;
+    parameters::enemies_amount   = 25'000;
     parameters::damage           = 30;
     parameters::mutation         = 20;
-    parameters::move_error       = 30;
+    parameters::move_error       = 20;
     run.run();
 }
