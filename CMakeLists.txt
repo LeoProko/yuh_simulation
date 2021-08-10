@@ -32,7 +32,6 @@ if(NOT json_POPULATED)
     add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
 
-
 add_subdirectory(bot)
 add_subdirectory(cell)
 add_subdirectory(file)
