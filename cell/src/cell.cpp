@@ -14,9 +14,9 @@ void Cell::reproduce(std::list<Bot>& bots) {
         for (int i = 0; i < (mother->children_amount_ + father->children_amount_) / (2 * 10); ++i) {
             bots.emplace_back(mother, father);
         }
-        mother->health_ -= parameters::damage *
+        mother->health_ -= parameters::damage / 2 *
             (mother->children_amount_ / 10);
-        father->health_ -= parameters::damage *
+        father->health_ -= parameters::damage / 2 *
             (father->children_amount_ / 10);
     }
 }

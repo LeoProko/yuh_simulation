@@ -8,7 +8,7 @@ int main() {
     parameters::altruists_amount = 500;
     parameters::days_amount      = 350;
     parameters::food_amount      = 1000;
-    parameters::food_per_cell    = 1;
+    parameters::food_per_cell    = 2;
     parameters::enemies_amount   = 200;
     parameters::damage           = 33;
     parameters::mutation         = 20;
