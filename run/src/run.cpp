@@ -8,11 +8,23 @@ void Run::init() {
     for (int i = 0; i < parameters::bots_amount; ++i) {
         all_bots.emplace_back();
     }
-    output_file_ = File("visualization/results.json");
+    bots_amount_file_ = File("visualization/json/bots_amount.json");
+    parameters_file_ = File("visualization/json/parameters.json");
+    parameters_file_.print(std::string("bots_amount "));
+    parameters_file_.print(std::string("militancy "));
+    parameters_file_.print(std::string("intelligence "));
+    parameters_file_.print(std::string("vision "));
+    parameters_file_.print(std::string("children_amount "));
+    parameters_file_.print(std::string("children_health "));
+    parameters_file_.print(std::string("health "));
+    parameters_file_.print(std::string("lifetime "));
+    parameters_file_.print(std::string("altruist_amount "));
+    parameters_file_.print(std::string("greenbeared_amount "));
+    parameters_file_.print(std::string("greenbeared_altruists_amount\n"));
     std::cout << "INITIALIZATION COMPLETED\n";
 }
 
-void Run::print_average() const {
+void Run::print_average() {
     int avg_militancy = 0;
     int avg_intelligence = 0;
     int avg_children_amount = 0;
@@ -52,6 +64,19 @@ void Run::print_average() const {
     std::cout << "Altruists amount.............." << altruist_amount << "\n";
     std::cout << "Greenbeared amount............" << greenbeared_amount << "\n";
     std::cout << "Greenbeared altruists amount.." << greenbeared_altruists_amount << "\n";
+    nlohmann::json json_parameters;
+    json_parameters["bots_amount"] = all_bots.size();
+    json_parameters["militancy"] = avg_militancy;
+    json_parameters["intelligence"] = avg_intelligence;
+    json_parameters["vision"] = 10 * avg_vision;
+    json_parameters["children_amount"] = 10 * avg_children_amount;
+    json_parameters["children_health"] = avg_children_health;
+    json_parameters["health"] = avg_health;
+    json_parameters["lifetime"] = avg_lifetime;
+    json_parameters["altruist_amount"] = altruist_amount;
+    json_parameters["greenbeared_amount"] = greenbeared_amount;
+    json_parameters["greenbeared_altruists_amount"] = greenbeared_altruists_amount;
+    parameters_file_.print(json_parameters);
 }
 
 void Run::print_progress(int today) {
@@ -96,8 +121,8 @@ void Run::run() {
         for (auto& bot : all_bots) {
             map_[bot.position_].do_all(new_bots);
         }
-        nlohmann::json json_result = map_;
-        output_file_.print(json_result);
+        nlohmann::json json_map = map_;
+        bots_amount_file_.print(json_map);
         for (auto& bot : all_bots) {
             map_[bot.position_].clean();
         }

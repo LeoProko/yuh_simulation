@@ -18,7 +18,8 @@ protected:
     const int bar_width = 70;
     Map map_;
     std::list<Bot> all_bots;
-    File output_file_;
+    File bots_amount_file_;
+    File parameters_file_;
 
     void init();
 
@@ -29,5 +30,5 @@ public:
 
     void print_progress(int today);
 
-    void print_average() const;
+    void print_average();
 };

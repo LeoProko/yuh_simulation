@@ -18,7 +18,7 @@ File& File::operator=(File&& other) {
 }
 
 void File::print(const std::string& output) {
-    file_ << output << "\n";
+    file_ << output;
 }
 
 void File::print(const nlohmann::json& output) {

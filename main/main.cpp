@@ -4,13 +4,13 @@
 int main() {
     Run run;
     parameters::map_size         = 100;
-    parameters::bots_amount      = 1000;
+    parameters::bots_amount      = 1'000;
     parameters::altruists_amount = 500;
-    parameters::days_amount      = 350;
-    parameters::food_amount      = 1000;
+    parameters::days_amount      = 300;
+    parameters::food_amount      = 300;
     parameters::food_per_cell    = 2;
-    parameters::enemies_amount   = 200;
-    parameters::damage           = 33;
+    parameters::enemies_amount   = 100;
+    parameters::damage           = 30;
     parameters::mutation         = 20;
     parameters::move_error       = 30;
     run.run();
