@@ -19,7 +19,7 @@ def make_video(image_folder, video_name, fps):
     print('Making video was successful')
 
 def main():
-    make_video('charts/map', 'visualization.avi', 10)
+    make_video('charts/map', 'visualization.avi', 20)
 
 if __name__ == '__main__':
     main()
