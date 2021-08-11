@@ -43,9 +43,12 @@ void Run::print_average() {
         avg_vision += bot.vision_;
         avg_health += bot.health_;
         avg_lifetime += bot.lifetime_;
-        altruists_amount += bot.is_altruist_;
-        greenbeared_amount += bot.is_greenbeared_;
-        greenbeared_altruists_amount += bot.is_altruist_ && bot.is_greenbeared_;
+        if (bot.is_altruist_ && bot.is_greenbeared_) {
+            greenbeared_altruists_amount += bot.is_altruist_ && bot.is_greenbeared_;
+        } else {
+            altruists_amount += bot.is_altruist_;
+            greenbeared_amount += bot.is_greenbeared_;
+        }
     }
     avg_militancy /= all_bots.size();
     avg_intelligence /= all_bots.size();
