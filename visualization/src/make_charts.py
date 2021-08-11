@@ -1,4 +1,5 @@
 import json
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.colors import BoundaryNorm
 from matplotlib.ticker import MaxNLocator
@@ -11,6 +12,26 @@ class MakeCharsFromJson:
         os.system('mkdir charts')
         os.system('mkdir charts/map')
 
+    def _draw_bots(self, bot_map, day_number):
+        matplotlib.use('agg')
+        dx, dy = 1, 1
+        z = np.array(bot_map)
+        y, x = np.mgrid[slice(0, z.shape[0] + dy, dy),
+                        slice(0, z.shape[1] + dx, dx)]
+        levels = MaxNLocator(nbins=15).tick_values(z.min(), z.max())
+        cmap = plt.get_cmap('PiYG')
+        norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
+        fig, ax = plt.subplots()
+        cf = ax.contourf(x[:-1, :-1] + dx/2.,
+                          y[:-1, :-1] + dy/2., z, levels=levels,
+                          cmap=cmap)
+        fig.colorbar(cf, ax=ax)
+        fig.set_size_inches(14, 12)
+        ax.set_title('day number ' + str(day_number + 1))
+        plt.savefig('charts/map/day_number_' + str(day_number).zfill(6) + '.jpg')
+        plt.close()
+
+
     def map(self, json_name):
         json_path = 'json/' + json_name + '.json'
         print('Starting to convert map charts to .jpg for video creation')
@@ -19,23 +40,7 @@ class MakeCharsFromJson:
             if day_number % 10 == 0:
                 print('Day number', day_number, 'has been processed')
             bot_map = json.loads(bot_map)
-            dx, dy = 1, 1
-            z = np.array(bot_map)
-            y, x = np.mgrid[slice(0, z.shape[0] + dy, dy),
-                            slice(0, z.shape[1] + dx, dx)]
-            levels = MaxNLocator(nbins=15).tick_values(z.min(), z.max())
-            cmap = plt.get_cmap('PiYG')
-            norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
-            fig, ax = plt.subplots()
-            cf = ax.contourf(x[:-1, :-1] + dx/2.,
-                              y[:-1, :-1] + dy/2., z, levels=levels,
-                              cmap=cmap)
-            fig.colorbar(cf, ax=ax)
-            fig.set_size_inches(14, 12)
-            ax.set_title('day number ' + str(day_number + 1))
-            plt.savefig('charts/map/day_number_' + str(day_number).zfill(6) + '.jpg')
-            plt.clf()
-            plt.close()
+            self._draw_bots(bot_map, day_number)
         print('Converting was successful')
 
     def parameters(self, json_name):
