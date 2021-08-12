@@ -8,16 +8,18 @@
 class Bot {
 public:
     Position position_;
-    const int genes_amount_ = 5;
+    const int genes_amount_ = 7;
 
     // Characteristics
     int health_ = 100;  // from 0 to 100
     int lifetime_ = 0;
 
     // Genome from 0 to 99
+    int collect_              = parameters::random() % 100;
     int militancy_            = parameters::random() % 100;
     int intelligence_         = parameters::random() % 100;
     int vision_               = parameters::random() % 100;
+    int share_                = parameters::random() % 100;
     int children_amount_      = parameters::random() % 100;
     int children_health_      = parameters::random() % 100;
     bool is_altruist_         = false;
