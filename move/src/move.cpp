@@ -33,26 +33,27 @@ void move(Bot& bot, Map& map) {
                     static_cast<int>(
                         bot.intelligence_ * positions.size() / 100 +
                         parameters::random() % (
-                            parameters::move_error * positions.size() / 100
+                            std::max(
+                                1,
+                                static_cast<int>(parameters::move_error * positions.size() / 100)
+                            )
                         ) -
-                        (parameters::move_error * positions.size()) / 200
+                        (parameters::move_error * positions.size() / 200)
                     )
                 )
             )
         ];
     }
 
-    int square_path_length = 
+    int path_length = std::sqrt(
         (bot.position_.x - prev_position.x) * 
         (bot.position_.x - prev_position.x) +
         (bot.position_.y - prev_position.y) * 
-        (bot.position_.y - prev_position.y);
-
-    square_path_length = static_cast<int>(std::max(0, std::min(100, square_path_length)));
-    int path_length = std::sqrt(square_path_length);
+        (bot.position_.y - prev_position.y)
+    );
 
     ++bot.lifetime_;
-    bot.health_ -= parameters::damage * (1 + path_length);
+    bot.health_ -= parameters::damage * std::max(1, path_length);
 
     map[bot.position_].add_bot(bot);
 }

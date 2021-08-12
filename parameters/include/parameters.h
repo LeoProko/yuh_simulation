@@ -16,7 +16,6 @@ namespace parameters {
     extern int mutation;
     extern int move_error;
 
-
     int random();
 
     void print();

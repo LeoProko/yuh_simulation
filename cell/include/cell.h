@@ -13,7 +13,11 @@ private:
 
     void split_food();
 
-    double total_coef_ = 0.;
+    void share_food();
+
+    void fight();
+
+    double total_collect_coeff_ = 0.;
 
 public:
     int bot_counter_ = 0;
@@ -25,8 +29,6 @@ public:
     Cell() = default;
 
     void do_all(std::list<Bot>& bots);
-
-    void clean();
 
     void altruists_activation();
 

@@ -29,13 +29,14 @@ void Map::clean() {
         for (int j = 0; j < parameters::map_size; ++j) {
             map_[i][j].food_counter_ = 0;
             map_[i][j].is_enemy_ = false;
+            map_[i][j].bot_counter_ = 0;
         }
     }
 }
 
 void Map::respawn_food() {
     for (int i = 0; i < parameters::food_amount; ++i) {
-        int added_food = parameters::random() % 10;
+        int added_food = parameters::random() % (parameters::food_per_cell + 1);
         food_amount_ += added_food;
         map_[parameters::random() % parameters::map_size]
             [parameters::random() % parameters::map_size].food_counter_ = added_food;
