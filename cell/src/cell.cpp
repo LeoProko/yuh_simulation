@@ -15,22 +15,78 @@ void Cell::reproduce(std::list<Bot>& bots) {
             bots.emplace_back(mother, father);
         }
         mother->health_ -= parameters::damage *
-            (mother->children_amount_ / 10);
+            mother->children_amount_ / 10;
         father->health_ -= parameters::damage *
-            (father->children_amount_ / 10);
+            father->children_amount_ / 10;
     }
 }
 
 void Cell::split_food() {
     for (auto& bot : bots_in_cell_) {
-        double current_coef = bot->militancy_;
-        if (total_coef_ != 0) {
-            current_coef /= total_coef_;
+        double current_collect_coeff = bot->collect_;
+        if (total_collect_coeff_ != 0) {
+            current_collect_coeff /= total_collect_coeff_;
         }
-        bot->health_ = std::min(
+        bot->health_ = std::max(0, std::min(
             100'000,
-            bot->health_ + static_cast<int>(current_coef * food_counter_ * 100.)
-        );
+            bot->health_ + static_cast<int>(current_collect_coeff * food_counter_ * 100.)
+        ));
+    }
+}
+
+void Cell::share_food() {
+    std::sort(
+        bots_in_cell_.begin(),
+        bots_in_cell_.end(),
+        [](Bot* first, Bot* second) {
+            return first->health_ > second->health_;
+        }
+    );
+    for (
+        int front = 0, back = bots_in_cell_.size() - 1;
+        front < back;
+        ++front, --back) {
+        int food_to_share = bots_in_cell_[front]->share_;
+        bots_in_cell_[front]->health_ -= food_to_share;
+        bots_in_cell_[back]->health_ += food_to_share;
+    }
+}
+
+void Cell::fight() {
+    std::sort(
+        bots_in_cell_.begin(),
+        bots_in_cell_.end(),
+        [](Bot* first, Bot* second) {
+            return first->militancy_ > second->militancy_;
+        }
+    );
+    for (
+        int first = 0, second = 1;
+        second < static_cast<int>(bots_in_cell_.size());
+        first += 2, second += 2) {
+        int food_to_share = 0;
+        if (bots_in_cell_[first]->militancy_ > bots_in_cell_[second]->militancy_) {
+            food_to_share -= parameters::damage;
+        } else if (bots_in_cell_[first]->militancy_ < bots_in_cell_[second]->militancy_) {
+            food_to_share += parameters::damage;
+        }
+        bots_in_cell_[first]->health_ -= food_to_share;
+        bots_in_cell_[second]->health_ += food_to_share;
+    }
+}
+
+void Cell::do_all(std::list<Bot>& bots) {
+    if (bots_in_cell_ > 0) {
+        if (is_enemy_) {
+            altruists_activation();
+            enemy_activation();
+        }
+        split_food();
+        share_food();
+        fight();
+        reproduce(bots);
+        bots_in_cell_.clear();
+        total_collect_coeff_ = 0;
     }
 }
 
@@ -50,28 +106,14 @@ void Cell::altruists_activation() {
 void Cell::enemy_activation() {
     for (auto& bot : bots_in_cell_) {
         if ((bot->is_altruist_ && parameters::random() % 2) || !bot->is_protected_) {
-            bot->health_ = 0;
+            bot->health_ = parameters::damage;
         }
         bot->is_protected_ = false;
     }
 }
 
-void Cell::do_all(std::list<Bot>& bots) {
-    if (bot_counter_ > 0) {
-        reproduce(bots);
-        split_food();
-        if (is_enemy_) {
-            altruists_activation();
-            enemy_activation();
-        }
-        bots_in_cell_.clear();
-        bot_counter_ = 0;
-        total_coef_ = 0;
-    }
-}
-
 void Cell::add_bot(Bot& bot) {
     bots_in_cell_.push_back(&bot);
-    total_coef_ += bot.militancy_;
+    total_collect_coeff_ += bot.collect_;
     ++bot_counter_;
 }
