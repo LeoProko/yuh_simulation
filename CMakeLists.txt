@@ -8,6 +8,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_compile_options(-Wall -Wextra -Werror)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin")
 
+find_package(Threads REQUIRED)
+
 function(add_project)
     file(GLOB_RECURSE LIB_CXX_SOURCES ${PROJECT_SOURCE_DIR}/*.cpp)
     file(GLOB_RECURSE LIB_HEADERS ${PROJECT_SOURCE_DIR}/*.h)
@@ -20,6 +22,7 @@ function(add_project)
         PUBLIC ${PROJECT_SOURCE_DIR}/include
     )
 endfunction()
+
 
 include(FetchContent)
 FetchContent_Declare(json
