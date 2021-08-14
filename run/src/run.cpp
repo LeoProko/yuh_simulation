@@ -144,7 +144,7 @@ void Run::thread_do_all(int thread_num, std::list<Bot>& bots) {
     int thread_block_size = parameters::map_size / parameters::threads_amount;
     int thread_block_size_reminder = parameters::map_size % parameters::threads_amount;
     int from = thread_num * thread_block_size;
-    int to = thread_num * thread_block_size + thread_block_size +
+    int to = thread_num * (1 + thread_block_size) + 
         (thread_num == (parameters::threads_amount - 1)) * thread_block_size_reminder;
     for (int x = from; x != to; ++x) {
         for (int y = from; y != to; ++y) {
@@ -178,7 +178,7 @@ void Run::add_bots(std::list<Bot>& bots) {
             thread_block_size_reminder;
         std::advance(bots_it_to, from - to);
         all_bots_[thread_num].splice(
-            all_bots_[thread_num].begin(),
+            all_bots_[thread_num].end(),
             bots,
             bots_it_from,
             bots_it_to
@@ -201,7 +201,7 @@ void Run::run() {
     init();
 
     for (int today = 0; today <= parameters::days_amount; ++today) {
-        print_progress(today);
+        //print_progress(today);
 
         for (int thread_num = 0; thread_num != parameters::threads_amount; ++thread_num) {
             threads_[thread_num] = std::thread(&Run::thread_move, this, thread_num);
@@ -217,6 +217,7 @@ void Run::run() {
         for (auto& thread : threads_) {
             thread.join();
         }
+        std::cout << new_bots.size() << "\n";
 
         nlohmann::json json_map = map_;
         bots_amount_file_.print(json_map);
