@@ -5,7 +5,7 @@ namespace parameters {
     int map_size = 10;
     int bots_amount = 100;
     int altruists_amount = 25;
-    int days_amount = 5'000;
+    int days_amount = 30;
     int food_amount = 100;
     int food_per_cell = 10;
     int enemies_amount = 10;

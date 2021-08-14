@@ -1,6 +1,6 @@
 #include "cell.h"
 
-void Cell::reproduce(std::list<Bot>& bots) {
+void Cell::reproduce(std::list<Bot>& bots, std::mutex& reproduce_mutex) {
     if (bots_in_cell_.size() > 1) {
         std::sort(
             bots_in_cell_.rbegin(),
@@ -11,9 +11,11 @@ void Cell::reproduce(std::list<Bot>& bots) {
         );
         Bot* mother = bots_in_cell_.front();
         Bot* father = *(++bots_in_cell_.begin());
+        reproduce_mutex.lock();
         for (int i = 0; i < (mother->children_amount_ + father->children_amount_) / (2 * 10); ++i) {
             bots.emplace_back(mother, father);
         }
+        reproduce_mutex.unlock();
         mother->health_ -= parameters::damage *
             mother->children_amount_ / 10;
         father->health_ -= parameters::damage *
@@ -75,8 +77,8 @@ void Cell::fight() {
     }
 }
 
-void Cell::do_all(std::list<Bot>& bots) {
-    if (bots_in_cell_ > 0) {
+void Cell::do_all(std::list<Bot>& bots, std::mutex& reproduce_mutex) {
+    if (!bots_in_cell_.empty()) {
         if (is_enemy_) {
             altruists_activation();
             enemy_activation();
@@ -84,7 +86,7 @@ void Cell::do_all(std::list<Bot>& bots) {
         split_food();
         share_food();
         fight();
-        reproduce(bots);
+        reproduce(bots, reproduce_mutex);
         bots_in_cell_.clear();
         total_collect_coeff_ = 0;
     }
@@ -113,7 +115,16 @@ void Cell::enemy_activation() {
 }
 
 void Cell::add_bot(Bot& bot) {
+    std::unique_lock<std::mutex> uniq_lock(*move_mutex);
     bots_in_cell_.push_back(&bot);
     total_collect_coeff_ += bot.collect_;
     ++bot_counter_;
+}
+
+Cell::Cell(Cell&) {
+    move_mutex = new std::mutex;
+}
+
+Cell::~Cell() {
+    delete move_mutex;
 }

@@ -5,8 +5,15 @@ void Run::init() {
     progress = 0.;
     progress_scale = 1. / parameters::days_amount;
     map_ = Map();
-    for (int i = 0; i < parameters::bots_amount; ++i) {
-        all_bots.emplace_back();
+    threads_amount = 8;
+    threads.resize(threads_amount);
+    all_bots.resize(threads_amount);
+    for (int i = 0; i < threads_amount; ++i) {
+        if (i != threads_amount - 1) {
+            all_bots[i].resize(parameters::bots_amount / threads_amount);
+            continue;
+        }
+        all_bots[i].resize((parameters::bots_amount / threads_amount) + (parameters::bots_amount % threads_amount));
     }
     bots_amount_file_ = File("visualization/json/bots_amount.json");
     parameters_file_ = File("visualization/json/parameters.json");
@@ -39,21 +46,23 @@ void Run::print_average() {
     int altruists_amount = 0;
     int greenbeared_amount = 0;
     int greenbeared_altruists_amount = 0;
-    for (auto& bot : all_bots) {
-        avg_collect += bot.collect_;
-        avg_militancy += bot.militancy_;
-        avg_intelligence += bot.intelligence_;
-        avg_children_amount += bot.children_amount_;
-        avg_children_health += bot.children_health_;
-        avg_vision += bot.vision_;
-        avg_share += bot.share_;
-        avg_health += bot.health_;
-        avg_lifetime += bot.lifetime_;
-        if (bot.is_altruist_ && bot.is_greenbeared_) {
-            greenbeared_altruists_amount += bot.is_altruist_ && bot.is_greenbeared_;
-        } else {
-            altruists_amount += bot.is_altruist_;
-            greenbeared_amount += bot.is_greenbeared_;
+    for (int i = 0; i != threads_amount; ++i) {
+        for (auto &bot : all_bots[i]) {
+            avg_collect += bot.collect_;
+            avg_militancy += bot.militancy_;
+            avg_intelligence += bot.intelligence_;
+            avg_children_amount += bot.children_amount_;
+            avg_children_health += bot.children_health_;
+            avg_vision += bot.vision_;
+            avg_share += bot.share_;
+            avg_health += bot.health_;
+            avg_lifetime += bot.lifetime_;
+            if (bot.is_altruist_ && bot.is_greenbeared_) {
+                greenbeared_altruists_amount += bot.is_altruist_ && bot.is_greenbeared_;
+            } else {
+                altruists_amount += bot.is_altruist_;
+                greenbeared_amount += bot.is_greenbeared_;
+            }
         }
     }
     avg_collect /= all_bots.size();
@@ -125,36 +134,85 @@ void Run::run() {
     std::cout << "START SIMULATION WITH PARAMETERS:\n";
     parameters::print();
     init();
+    int end_of_day_bots_amount ;
     for (int today = 0; today <= parameters::days_amount; ++today) {
+        end_of_day_bots_amount = 0;
         print_progress(today);
-        for (auto bot_iter = all_bots.begin(); bot_iter != all_bots.end(); ++bot_iter) {
-            if (bot_iter->health_ > parameters::damage) {
-                move(*bot_iter, map_);
-            }
+        for (int threads_cnt = 0; threads_cnt != threads_amount; ++threads_cnt) {
+            threads[threads_cnt] = std::thread([threads_cnt,
+                                                &all_bots = all_bots,
+                                                &map_ = map_] {
+                for (auto bot_iter = all_bots[threads_cnt].begin(); bot_iter != all_bots[threads_cnt].end(); ++bot_iter) {
+                    if (bot_iter->health_ > parameters::damage) {
+                        move(*bot_iter, map_);
+                    }
+                }
+            });
+        }
+        for (auto& thread : threads) {
+            thread.join();
         }
         std::list<Bot> new_bots;
-        for (auto& bot : all_bots) {
-            map_[bot.position_].do_all(new_bots);
+        int block_sz = parameters::map_size / threads_amount;
+        int last_block_extra = parameters::map_size % threads_amount;
+        for (int threads_cnt = 0; threads_cnt != threads_amount; ++threads_cnt) {
+            threads[threads_cnt] = std::thread([threads_cnt,
+                                                last_block_extra,
+                                                threads_amount = threads_amount,
+                                                block_sz,
+                                                &reproduce_mutex = reproduce_mutex,
+                                                &map_ = map_,
+                                                &new_bots = new_bots] {
+                int from = threads_cnt * block_sz;
+                int to = threads_cnt * block_sz + block_sz + (threads_cnt == (threads_amount - 1)) * last_block_extra;
+                for (int i = from; i != to; ++i) {
+                    for (int j = from; j != to; ++j) {
+                        map_[Position{i, j}].do_all(new_bots, reproduce_mutex);
+                    }
+                }
+            });
+        }
+        for (auto& thread : threads) {
+            thread.join();
         }
         nlohmann::json json_map = map_;
         bots_amount_file_.print(json_map);
-        for (auto bot_iter = all_bots.begin(); bot_iter != all_bots.end();) {
-            if (bot_iter->health_ <= parameters::damage) {
-                auto bot_iter_to_erase = bot_iter++;
-                all_bots.erase(bot_iter_to_erase);
-            } else {
-                ++bot_iter;
-            }
+        for (int threads_cnt = 0; threads_cnt != threads_amount; ++threads_cnt) {
+            threads[threads_cnt] = std::thread([threads_cnt,
+                                                &all_bots = all_bots] {
+                for (auto bot_iter = all_bots[threads_cnt].begin(); bot_iter != all_bots[threads_cnt].end();) {
+                    if (bot_iter->health_ <= parameters::damage) {
+                        auto bot_iter_to_erase = bot_iter++;
+                        all_bots[threads_cnt].erase(bot_iter_to_erase);
+                    } else {
+                        ++bot_iter;
+                    }
+                }
+            });
         }
-        for (const auto& new_bot : new_bots) {
-            all_bots.push_back(new_bot);
+        for (auto& thread : threads) {
+            thread.join();
+        }
+        auto new_bots_it_from = new_bots.begin();
+        auto new_bots_it_to = new_bots.begin();
+        block_sz = (threads_amount / int(new_bots.size()));
+        last_block_extra = (threads_amount % int(new_bots.size()));
+        for (int i = 0; i != threads_amount; ++i) {
+            int from = block_sz * i;
+            int to = block_sz * i + block_sz + (i == threads_amount - 1) * last_block_extra;
+            std::advance(new_bots_it_to, from - to);
+            all_bots[i].splice(all_bots[i].begin(), new_bots, new_bots_it_from, new_bots_it_to);
+            new_bots_it_from = new_bots_it_to;
         }
         map_.clean_and_respawn();
-        if (all_bots.size() == 0) {
+        for (int i = 0; i != threads_amount; ++i) {
+            end_of_day_bots_amount += all_bots[i].size();
+        }
+        if (end_of_day_bots_amount == 0) {
             break;
         }
     }
-    if (all_bots.size() == 0) {
+    if (end_of_day_bots_amount == 0) {
         std::cout << "SIMULATION FAILED. ALL BOTS DEAD!\n";
     } else {
         std::cout << "SUCCESSFUL SIMULATION. CONGRATULAIONS!\n";

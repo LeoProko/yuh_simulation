@@ -2,6 +2,7 @@
 
 #include <deque>
 #include <list>
+#include <mutex>
 
 #include "bot.h"
 #include "parameters.h"
@@ -9,7 +10,7 @@
 
 class Cell {
 private:
-    void reproduce(std::list<Bot>& all_bots);
+    void reproduce(std::list<Bot>& all_bots, std::mutex& reproduce_mutex);
 
     void split_food();
 
@@ -18,6 +19,8 @@ private:
     void fight();
 
     double total_collect_coeff_ = 0.;
+
+    std::mutex* move_mutex;
 
 public:
     int bot_counter_ = 0;
@@ -28,7 +31,11 @@ public:
 
     Cell() = default;
 
-    void do_all(std::list<Bot>& bots);
+    Cell(Cell&);
+
+    ~Cell();
+
+    void do_all(std::list<Bot>& bots, std::mutex& reproduce_mutex);
 
     void altruists_activation();
 

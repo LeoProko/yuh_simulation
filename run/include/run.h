@@ -3,6 +3,7 @@
 #include <iostream>
 #include <list>
 #include <vector>
+#include <thread>
 #include <nlohmann/json.hpp>
 
 #include "bot.h"
@@ -17,9 +18,12 @@ protected:
     double progress_scale;
     const int bar_width = 70;
     Map map_;
-    std::list<Bot> all_bots;
+    std::vector<std::list<Bot>> all_bots;
     File bots_amount_file_;
     File parameters_file_;
+    int threads_amount;
+    std::vector<std::thread> threads;
+    std::mutex reproduce_mutex;
 
     void init();
 
