@@ -76,7 +76,7 @@ void Cell::fight() {
 }
 
 void Cell::do_all(std::list<Bot>& bots) {
-    if (bots_in_cell_ > 0) {
+    if (bots_in_cell_.size() > 0) {
         if (is_enemy_) {
             altruists_activation();
             enemy_activation();
