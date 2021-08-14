@@ -10,7 +10,7 @@
 
 class Cell {
 private:
-    void reproduce(std::list<Bot>& all_bots, std::mutex& reproduce_mutex);
+    void reproduce(std::list<Bot>& all_bots);
 
     void split_food();
 
@@ -31,11 +31,11 @@ public:
 
     Cell() = default;
 
-    Cell(Cell&);
+    Cell(const Cell&);
 
     ~Cell();
 
-    void do_all(std::list<Bot>& bots, std::mutex& reproduce_mutex);
+    void do_all(std::list<Bot>& bots);
 
     void altruists_activation();
 

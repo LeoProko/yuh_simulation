@@ -15,6 +15,9 @@ namespace parameters {
     extern int damage;
     extern int mutation;
     extern int move_error;
+    extern int threads_amount;
+
+    extern std::mutex reproduce_mutex;
 
     int random();
 

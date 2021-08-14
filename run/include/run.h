@@ -21,9 +21,8 @@ protected:
     std::vector<std::list<Bot>> all_bots;
     File bots_amount_file_;
     File parameters_file_;
-    int threads_amount;
     std::vector<std::thread> threads;
-    std::mutex reproduce_mutex;
+    int bots_amount_;
 
     void init();
 

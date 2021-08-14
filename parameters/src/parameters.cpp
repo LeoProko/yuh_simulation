@@ -12,6 +12,8 @@ namespace parameters {
     int damage = 20;
     int mutation = 10;
     int move_error = 30;
+    int threads_amount = 8;
+    std::mutex reproduce_mutex;
 
     int random() {
         return std::abs(static_cast<int>(random_()));

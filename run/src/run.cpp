@@ -5,15 +5,15 @@ void Run::init() {
     progress = 0.;
     progress_scale = 1. / parameters::days_amount;
     map_ = Map();
-    threads_amount = 8;
-    threads.resize(threads_amount);
-    all_bots.resize(threads_amount);
-    for (int i = 0; i < threads_amount; ++i) {
-        if (i != threads_amount - 1) {
-            all_bots[i].resize(parameters::bots_amount / threads_amount);
+    threads.resize(parameters::threads_amount);
+    all_bots.resize(parameters::threads_amount);
+    bots_amount_ = parameters::bots_amount;
+    for (int i = 0; i < parameters::threads_amount; ++i) {
+        if (i != parameters::threads_amount - 1) {
+            all_bots[i].resize(parameters::bots_amount / parameters::threads_amount);
             continue;
         }
-        all_bots[i].resize((parameters::bots_amount / threads_amount) + (parameters::bots_amount % threads_amount));
+        all_bots[i].resize((parameters::bots_amount / parameters::threads_amount) + (parameters::bots_amount % parameters::threads_amount));
     }
     bots_amount_file_ = File("visualization/json/bots_amount.json");
     parameters_file_ = File("visualization/json/parameters.json");
@@ -46,7 +46,7 @@ void Run::print_average() {
     int altruists_amount = 0;
     int greenbeared_amount = 0;
     int greenbeared_altruists_amount = 0;
-    for (int i = 0; i != threads_amount; ++i) {
+    for (int i = 0; i != parameters::threads_amount; ++i) {
         for (auto &bot : all_bots[i]) {
             avg_collect += bot.collect_;
             avg_militancy += bot.militancy_;
@@ -65,15 +65,15 @@ void Run::print_average() {
             }
         }
     }
-    avg_collect /= all_bots.size();
-    avg_militancy /= all_bots.size();
-    avg_intelligence /= all_bots.size();
-    avg_children_amount /= all_bots.size();
-    avg_children_health /= all_bots.size();
-    avg_vision /= all_bots.size();
-    avg_share /= static_cast<int64_t>(all_bots.size());
-    avg_health /= static_cast<int64_t>(all_bots.size());
-    avg_lifetime /= all_bots.size();
+    avg_collect /= bots_amount_;
+    avg_militancy /= bots_amount_;
+    avg_intelligence /= bots_amount_;
+    avg_children_amount /= bots_amount_;
+    avg_children_health /= bots_amount_;
+    avg_vision /= bots_amount_;
+    avg_share /= static_cast<int64_t>(bots_amount_);
+    avg_health /= static_cast<int64_t>(bots_amount_);
+    avg_lifetime /= bots_amount_;
     std::cout << "Average collect..............." << avg_collect << "\n";
     std::cout << "Average militancy............." << avg_militancy << "\n";
     std::cout << "Average intelligence.........." << avg_intelligence << "\n";
@@ -87,7 +87,7 @@ void Run::print_average() {
     std::cout << "Greenbeared amount............" << greenbeared_amount << "\n";
     std::cout << "Greenbeared altruists amount.." << greenbeared_altruists_amount << "\n";
     nlohmann::json json_parameters;
-    json_parameters["bots_amount"] = all_bots.size();
+    json_parameters["bots_amount"] = bots_amount_;
     json_parameters["collect"] = avg_collect;
     json_parameters["militancy"] = avg_militancy;
     json_parameters["intelligence"] = avg_intelligence;
@@ -126,7 +126,7 @@ void Run::print_progress(int today) {
     }
     std::cout << "] " << static_cast<int>(progress * 100.0) << "%\n";
     std::cout << "Day number " << today << "\n";
-    std::cout << "Bots amount: " << all_bots.size() << " \n";
+    std::cout << "Bots amount: " << bots_amount_ << " \n";
     print_average();
 }
 
@@ -134,11 +134,9 @@ void Run::run() {
     std::cout << "START SIMULATION WITH PARAMETERS:\n";
     parameters::print();
     init();
-    int end_of_day_bots_amount ;
     for (int today = 0; today <= parameters::days_amount; ++today) {
-        end_of_day_bots_amount = 0;
         print_progress(today);
-        for (int threads_cnt = 0; threads_cnt != threads_amount; ++threads_cnt) {
+        for (int threads_cnt = 0; threads_cnt != parameters::threads_amount; ++threads_cnt) {
             threads[threads_cnt] = std::thread([threads_cnt,
                                                 &all_bots = all_bots,
                                                 &map_ = map_] {
@@ -153,21 +151,19 @@ void Run::run() {
             thread.join();
         }
         std::list<Bot> new_bots;
-        int block_sz = parameters::map_size / threads_amount;
-        int last_block_extra = parameters::map_size % threads_amount;
-        for (int threads_cnt = 0; threads_cnt != threads_amount; ++threads_cnt) {
+        int block_sz = parameters::map_size / parameters::threads_amount;
+        int last_block_extra = parameters::map_size % parameters::threads_amount;
+        for (int threads_cnt = 0; threads_cnt != parameters::threads_amount; ++threads_cnt) {
             threads[threads_cnt] = std::thread([threads_cnt,
                                                 last_block_extra,
-                                                threads_amount = threads_amount,
                                                 block_sz,
-                                                &reproduce_mutex = reproduce_mutex,
                                                 &map_ = map_,
                                                 &new_bots = new_bots] {
                 int from = threads_cnt * block_sz;
-                int to = threads_cnt * block_sz + block_sz + (threads_cnt == (threads_amount - 1)) * last_block_extra;
+                int to = threads_cnt * block_sz + block_sz + (threads_cnt == (parameters::threads_amount - 1)) * last_block_extra;
                 for (int i = from; i != to; ++i) {
                     for (int j = from; j != to; ++j) {
-                        map_[Position{i, j}].do_all(new_bots, reproduce_mutex);
+                        map_[Position{i, j}].do_all(new_bots);
                     }
                 }
             });
@@ -177,7 +173,7 @@ void Run::run() {
         }
         nlohmann::json json_map = map_;
         bots_amount_file_.print(json_map);
-        for (int threads_cnt = 0; threads_cnt != threads_amount; ++threads_cnt) {
+        for (int threads_cnt = 0; threads_cnt != parameters::threads_amount; ++threads_cnt) {
             threads[threads_cnt] = std::thread([threads_cnt,
                                                 &all_bots = all_bots] {
                 for (auto bot_iter = all_bots[threads_cnt].begin(); bot_iter != all_bots[threads_cnt].end();) {
@@ -195,24 +191,25 @@ void Run::run() {
         }
         auto new_bots_it_from = new_bots.begin();
         auto new_bots_it_to = new_bots.begin();
-        block_sz = (threads_amount / int(new_bots.size()));
-        last_block_extra = (threads_amount % int(new_bots.size()));
-        for (int i = 0; i != threads_amount; ++i) {
+        block_sz = (parameters::threads_amount / int(new_bots.size()));
+        last_block_extra = (parameters::threads_amount % int(new_bots.size()));
+        for (int i = 0; i != parameters::threads_amount; ++i) {
             int from = block_sz * i;
-            int to = block_sz * i + block_sz + (i == threads_amount - 1) * last_block_extra;
+            int to = block_sz * i + block_sz + (i == parameters::threads_amount - 1) * last_block_extra;
             std::advance(new_bots_it_to, from - to);
             all_bots[i].splice(all_bots[i].begin(), new_bots, new_bots_it_from, new_bots_it_to);
             new_bots_it_from = new_bots_it_to;
         }
         map_.clean_and_respawn();
-        for (int i = 0; i != threads_amount; ++i) {
-            end_of_day_bots_amount += all_bots[i].size();
+        bots_amount_ = 0;
+        for (int i = 0; i != parameters::threads_amount; ++i) {
+            bots_amount_ += all_bots[i].size();
         }
-        if (end_of_day_bots_amount == 0) {
+        if (bots_amount_ == 0) {
             break;
         }
     }
-    if (end_of_day_bots_amount == 0) {
+    if (bots_amount_ == 0) {
         std::cout << "SIMULATION FAILED. ALL BOTS DEAD!\n";
     } else {
         std::cout << "SUCCESSFUL SIMULATION. CONGRATULAIONS!\n";
