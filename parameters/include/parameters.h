@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <mutex>
 #include <random>
 
 namespace parameters {
@@ -15,6 +16,9 @@ namespace parameters {
     extern int damage;
     extern int mutation;
     extern int move_error;
+    extern int threads_amount;
+
+    extern std::mutex mutex;
 
     int random();
 

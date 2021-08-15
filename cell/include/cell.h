@@ -2,6 +2,7 @@
 
 #include <deque>
 #include <list>
+#include <mutex>
 
 #include "bot.h"
 #include "parameters.h"
@@ -28,6 +29,10 @@ public:
 
     Cell() = default;
 
+    Cell(const Cell&);
+
+    ~Cell();
+
     void do_all(std::list<Bot>& bots);
 
     void altruists_activation();
@@ -35,4 +40,6 @@ public:
     void enemy_activation();
 
     void add_bot(Bot& bot);
+
+    std::mutex* move_mutex;
 };
