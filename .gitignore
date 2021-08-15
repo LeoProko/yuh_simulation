@@ -39,3 +39,4 @@ cmake-build-release/
 # CLion
 .idea
 cmake-build-debug
+.DS_Store
