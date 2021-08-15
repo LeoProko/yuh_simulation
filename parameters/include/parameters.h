@@ -18,7 +18,7 @@ namespace parameters {
     extern int move_error;
     extern int threads_amount;
 
-    extern std::mutex reproduce_mutex;
+    extern std::mutex mutex;
 
     int random();
 

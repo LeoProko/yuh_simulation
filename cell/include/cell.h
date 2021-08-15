@@ -20,8 +20,6 @@ private:
 
     double total_collect_coeff_ = 0.;
 
-    std::mutex* move_mutex;
-
 public:
     int bot_counter_ = 0;
     int food_counter_ = 0;
@@ -42,4 +40,6 @@ public:
     void enemy_activation();
 
     void add_bot(Bot& bot);
+
+    std::mutex* move_mutex;
 };

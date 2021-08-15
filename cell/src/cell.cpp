@@ -19,11 +19,11 @@ void Cell::reproduce(std::list<Bot>& bots) {
         );
         Bot* mother = bots_in_cell_.front();
         Bot* father = *(++bots_in_cell_.begin());
-        parameters::reproduce_mutex.lock();
+        parameters::mutex.lock();
         for (int i = 0; i < (mother->children_amount_ + father->children_amount_) / (2 * 10); ++i) {
             bots.emplace_back(mother, father);
         }
-        parameters::reproduce_mutex.unlock();
+        parameters::mutex.unlock();
         mother->health_ -= parameters::damage *
             mother->children_amount_ / 10;
         father->health_ -= parameters::damage *

@@ -13,7 +13,7 @@ namespace parameters {
     int mutation = 10;
     int move_error = 30;
     int threads_amount = 8;
-    std::mutex reproduce_mutex;
+    std::mutex mutex;
 
     int random() {
         return std::abs(static_cast<int>(random_()));
