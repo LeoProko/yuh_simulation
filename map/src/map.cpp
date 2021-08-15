@@ -2,7 +2,13 @@
 
 Map::Map()
     : map_(parameters::map_size, std::vector<Cell>(parameters::map_size)) {
-    respawn_food();
+    std::vector<std::thread> threads(parameters::threads_amount);
+    for (int thread_num = 0; thread_num != parameters::threads_amount; ++thread_num) {
+        threads[thread_num] = std::thread(&Map::clean_and_respawn, this, thread_num);
+    }
+    for (auto& thread : threads) {
+        thread.join();
+    }
 }
 
 std::vector<Cell>& Map::operator[](const int i) {
@@ -17,40 +23,6 @@ Cell& Map::operator[](const Position& position) {
     return map_[position.x][position.y];
 }
 
-void Map::spawn_bots(std::list<Bot>& all_bots) {
-    for (int i = 0; i < parameters::bots_amount; ++i) {
-        all_bots.emplace_back();
-        (*this)[all_bots.back().position_].add_bot(all_bots.back());
-    }
-}
-
-void Map::respawn_food() {
-    for (int i = 0; i < parameters::food_amount; ++i) {
-        int added_food = parameters::random() % (parameters::food_per_cell + 1);
-        food_amount_ += added_food;
-        map_[parameters::random() % parameters::map_size]
-        [parameters::random() % parameters::map_size].food_counter_ = added_food;
-    }
-}
-
-void Map::clean() {
-    for (int i = 0; i < parameters::map_size; ++i) {
-        for (int j = 0; j < parameters::map_size; ++j) {
-            map_[i][j].food_counter_ = 0;
-            map_[i][j].is_enemy_ = false;
-            map_[i][j].bot_counter_ = 0;
-        }
-    }
-}
-
-void Map::respawn_enemies() {
-    for (int i = 0; i < parameters::enemies_amount; ++i) {
-        map_[parameters::random() % parameters::map_size]
-        [parameters::random() % parameters::map_size].is_enemy_ = true;
-    }
-}
-
-
 void Map::clean_and_respawn(int thread_num) {
     int thread_block_size = parameters::map_size /
                             parameters::threads_amount;
@@ -60,21 +32,22 @@ void Map::clean_and_respawn(int thread_num) {
     int to = (1 + thread_num) * thread_block_size +
              (thread_num == (parameters::threads_amount - 1)) *
              thread_block_size_reminder;
-    int thread_food_cnt = 0;
-    for (int i = from; i < to; ++i) {
-        for (int j = 0; j < parameters::map_size; ++j) {
+    int thread_food_amount = 0;
+    for (int y = from; y < to; ++y) {
+        for (int x = 0; x < parameters::map_size; ++x) {
             int added_food = parameters::random() %
                              (parameters::map_size * parameters::map_size) <
                              parameters::food_amount;
-            thread_food_cnt += added_food;
-            map_[i][j].food_counter_ = added_food;
-            map_[i][j].is_enemy_ = parameters::random() %
+            added_food *= parameters::random() % parameters::food_per_cell;
+            thread_food_amount += added_food;
+            map_[y][x].food_counter_ = added_food;
+            map_[y][x].is_enemy_ = parameters::random() %
                                    (parameters::map_size * parameters::map_size) <
                                    parameters::enemies_amount;
-            map_[i][j].bot_counter_ = 0;
+            map_[y][x].bot_counter_ = 0;
         }
     }
     parameters::mutex.lock();
-    food_amount_ += thread_food_cnt;
+    food_amount_ += thread_food_amount;
     parameters::mutex.unlock();
 }

@@ -237,9 +237,7 @@ void Run::run() {
         add_bots(new_bots);
         map_.food_amount_ = 0;
         for (int thread_num = 0; thread_num != parameters::threads_amount; ++thread_num) {
-            threads_[thread_num] = std::thread([thread_num, &map_ = map_] {
-                map_.clean_and_respawn(thread_num);
-            });
+            threads_[thread_num] = std::thread(&Map::clean_and_respawn, std::ref(map_), thread_num);
         }
         for (auto& thread : threads_) {
             thread.join();

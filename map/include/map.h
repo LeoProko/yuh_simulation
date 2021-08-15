@@ -8,19 +8,12 @@
 
 #include <iostream>
 #include <list>
+#include <thread>
 #include <vector>
 
 class Map {
 private:
     std::vector<std::vector<Cell>> map_;
-
-    void spawn_bots(std::list<Bot>& all_bots);
-
-    void respawn_food();
-
-    void clean();
-
-    void respawn_enemies();
 
 public:
     int food_amount_ = 0;
