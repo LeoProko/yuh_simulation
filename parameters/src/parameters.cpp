@@ -1,7 +1,7 @@
 #include "parameters.h"
 
 namespace parameters {
-    std::mt19937 random_;
+    std::mt19937 random_(20);
     int map_size = 10;
     int bots_amount = 100;
     int altruists_amount = 25;
@@ -20,6 +20,7 @@ namespace parameters {
     }
 
     void print() {
+        std::cout << "Threads amount...." << threads_amount << "\n";
         std::cout << "Map size.........." << map_size << "\n";
         std::cout << "Bots amount......." << bots_amount << "\n";
         std::cout << "Altruists amount.." << altruists_amount << "\n";

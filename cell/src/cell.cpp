@@ -1,5 +1,13 @@
 #include "cell.h"
 
+Cell::Cell(const Cell&) {
+    move_mutex = new std::mutex;
+}
+
+Cell::~Cell() {
+    delete move_mutex;
+}
+
 void Cell::reproduce(std::list<Bot>& bots) {
     if (bots_in_cell_.size() > 1) {
         std::sort(
@@ -115,16 +123,8 @@ void Cell::enemy_activation() {
 }
 
 void Cell::add_bot(Bot& bot) {
-    std::unique_lock<std::mutex> uniq_lock(*move_mutex);
+    std::unique_lock<std::mutex> cell_lock(*move_mutex);
     bots_in_cell_.push_back(&bot);
     total_collect_coeff_ += bot.collect_;
     ++bot_counter_;
-}
-
-Cell::Cell(const Cell&) {
-    move_mutex = new std::mutex;
-}
-
-Cell::~Cell() {
-    delete move_mutex;
 }
