@@ -14,9 +14,9 @@ Bot::Bot(const Bot* mother, const Bot* father)
     , health_(
         (
             mother->health_ + father->health_ +
-            mother->children_health_ + father->children_health_
+            2 * mother->children_health_ + 2 * father->children_health_
         ) / (
-            4 + std::max(1, (mother->children_amount_ + father->children_amount_) / 200)
+            6 + std::max(0, (mother->children_amount_ + father->children_amount_) / 20)
         )
     )
     , collect_((mother->collect_ + father->collect_) / 2 +
@@ -26,8 +26,6 @@ Bot::Bot(const Bot* mother, const Bot* father)
     , intelligence_((mother->intelligence_ + father->intelligence_) / 2 +
         parameters::random() % parameters::mutation - parameters::mutation / 2)
     , vision_((mother->vision_ + father->vision_) / 2 +
-        parameters::random() % parameters::mutation - parameters::mutation / 2)
-    , share_((mother->share_ + father->share_) / 2 +
         parameters::random() % parameters::mutation - parameters::mutation / 2)
     , children_amount_((mother->children_amount_ + father->children_amount_) / 2 +
         parameters::random() % parameters::mutation - parameters::mutation / 2)
@@ -55,10 +53,9 @@ Bot::Bot(const Bot* mother, const Bot* father)
 void Bot::calibrate() {
     double coefficient = 50. * genes_amount_ /
                (collect_ + militancy_ + intelligence_ +
-                vision_ + share_ + children_amount_ + children_health_);
+                vision_ + children_amount_ + children_health_);
     
     collect_ = std::max(0, std::min(99, static_cast<int>(collect_ * coefficient)));
-    share_ = std::max(0, share_);
     militancy_ = std::max(0, std::min(99, static_cast<int>(militancy_ * coefficient)));
     intelligence_ = std::max(0, std::min(99, static_cast<int>(intelligence_ * coefficient)));
     children_amount_ = std::max(0, std::min(99, static_cast<int>(children_amount_ * coefficient)));
@@ -70,11 +67,13 @@ bool operator<(const Bot& first, const Bot& second) {
     return 
         first.collect_ + 
         first.militancy_ + 
-        first.health_ + 
-        2 * first.share_
+        first.intelligence_ + 
+        first.health_ -
+        3 * first.lifetime_
         <
         second.collect_ + 
         second.militancy_ + 
-        second.health_ + 
-        2 * second.share_;
+        second.intelligence_ + 
+        second.health_ -
+        3 * second.lifetime_;
 }

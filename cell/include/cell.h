@@ -14,8 +14,6 @@ private:
 
     void split_food();
 
-    void share_food();
-
     void fight();
 
     double total_collect_coeff_ = 0.;
