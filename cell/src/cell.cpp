@@ -97,7 +97,7 @@ void Cell::altruists_activation() {
 void Cell::enemy_activation() {
     for (auto& bot : bots_in_cell_) {
         if ((bot->is_altruist_ && parameters::random() % 2) || !bot->is_protected_) {
-            bot->health_ = parameters::damage;
+            bot->health_ = 0;
         }
         bot->is_protected_ = false;
     }
