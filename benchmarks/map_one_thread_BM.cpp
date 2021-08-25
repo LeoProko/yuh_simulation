@@ -14,10 +14,17 @@ static void BM_map_one_thread(benchmark::State& state) {
     Map map(map_sz, bots_amount, 0);
 
     for (auto _ : state) {
+
         for (Bot& bot : bots) {
             int new_x = rand() % map_sz;
             int new_y = rand() % map_sz;
             Move(bot, map, Position{new_x, new_y});
+        }
+
+        for (size_t i = 0; i != map_sz; ++i) {
+            for (size_t j = 0; j != map_sz; ++j) {
+                map[i][j].queue.clear();
+            }
         }
     }
 }

@@ -17,13 +17,14 @@ static void BM_lock_free(benchmark::State& state) {
     size_t n_threads = 8;
     size_t sub_vec_sz = bots_amount / n_threads;
     size_t first_sub_vec_sz = bots_amount / n_threads + bots_amount % n_threads;
+    std::vector<std::thread> threads(n_threads);
 
     for (auto _ : state) {
-        std::vector<std::thread> threads;
+
         for (size_t threads_cnt = 0; threads_cnt != n_threads; ++threads_cnt)  {
             size_t from = (threads_cnt == 0 ? 0  : first_sub_vec_sz + (threads_cnt - 1) * sub_vec_sz);
             size_t to = (threads_cnt == 0 ? first_sub_vec_sz : sub_vec_sz) + from;
-            threads.emplace_back(
+            threads[threads_cnt] = std::thread(
                     [from, to, &bots, &map, &map_sz] {
                         for (size_t i = from; i != to; ++i) {
                             int new_x = rand() % map_sz;
@@ -34,6 +35,14 @@ static void BM_lock_free(benchmark::State& state) {
         }
         for (auto& thread : threads) {
             thread.join();
+        }
+
+        for (size_t i = 0; i != map_sz; ++i) {
+            for (size_t j = 0; j != map_sz; ++j) {
+                while (map[i][j].queue->Pop().has_value()) {
+                    map[i][j].queue->Pop();
+                }
+            }
         }
     }
 }
