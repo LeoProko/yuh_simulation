@@ -10,7 +10,7 @@
 template <class T>
 class MPMCQueue {
 public:
-    MPMCQueue(uint64_t max_size = 128) : queue_(max_size) {
+    MPMCQueue(uint64_t max_size = 256) : queue_(max_size) {
         sz_ = max_size;
         for (uint64_t i = 0; i != sz_; ++i) {
             queue_[i].tag = i;

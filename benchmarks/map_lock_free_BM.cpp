@@ -1,5 +1,6 @@
 #include "bot.h"
 #include "map_lock_free.h"
+#include <sys/_types/_size_t.h>
 #include <vector>
 #include <cstdlib>
 #include <thread>
@@ -17,6 +18,10 @@ static void BM_lock_free(benchmark::State& state) {
     size_t n_threads = 8;
     size_t sub_vec_sz = bots_amount / n_threads;
     size_t first_sub_vec_sz = bots_amount / n_threads + bots_amount % n_threads;
+
+    size_t thread_block_size = map_sz / n_threads;
+    size_t thread_block_size_reminder = map_sz % n_threads;
+
     std::vector<std::thread> threads(n_threads);
 
     for (auto _ : state) {
@@ -33,16 +38,29 @@ static void BM_lock_free(benchmark::State& state) {
                         }
                     });
         }
+
         for (auto& thread : threads) {
             thread.join();
         }
+        
+        for (size_t threads_cnt = 0; threads_cnt != n_threads; ++threads_cnt) {
+            size_t from = threads_cnt * thread_block_size;
+            size_t to = (1 + threads_cnt) * thread_block_size + 
+                (threads_cnt == (n_threads - 1)) * thread_block_size_reminder;
+            threads[threads_cnt] = std::thread(
+                    [from, to, &map, &map_sz] { 
+                    for (size_t i = from; i != to; ++i) {
+                        for (size_t j = 0; j != map_sz; ++j) {
+                            while (map[i][j].queue->Pop().has_value()) {
+                                map[i][j].queue->Pop();
+                            }
+                        }
+                    }
+                });    
+        }
 
-        for (size_t i = 0; i != map_sz; ++i) {
-            for (size_t j = 0; j != map_sz; ++j) {
-                while (map[i][j].queue->Pop().has_value()) {
-                    map[i][j].queue->Pop();
-                }
-            }
+        for (auto& thread : threads) {
+            thread.join();         
         }
     }
 }
