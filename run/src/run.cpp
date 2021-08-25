@@ -28,7 +28,6 @@ void Run::init() {
     parameters_file_.print(std::string("militancy "));
     parameters_file_.print(std::string("intelligence "));
     parameters_file_.print(std::string("vision "));
-    parameters_file_.print(std::string("share "));
     parameters_file_.print(std::string("children_amount "));
     parameters_file_.print(std::string("children_health "));
     parameters_file_.print(std::string("health "));
@@ -46,7 +45,6 @@ void Run::print_average() {
     int avg_children_amount = 0;
     int avg_children_health = 0;
     int avg_vision = 0;
-    int64_t avg_share = 0;
     int64_t avg_health = 0;
     int avg_lifetime = 0;
     int altruists_amount = 0;
@@ -60,7 +58,6 @@ void Run::print_average() {
             avg_children_amount += bot.children_amount_;
             avg_children_health += bot.children_health_;
             avg_vision += bot.vision_;
-            avg_share += bot.share_;
             avg_health += bot.health_;
             avg_lifetime += bot.lifetime_;
             if (bot.is_altruist_ && bot.is_greenbeared_) {
@@ -77,14 +74,12 @@ void Run::print_average() {
     avg_children_amount /= bots_amount_;
     avg_children_health /= bots_amount_;
     avg_vision /= bots_amount_;
-    avg_share /= static_cast<int64_t>(bots_amount_);
     avg_health /= static_cast<int64_t>(bots_amount_);
     avg_lifetime /= bots_amount_;
     std::cout << "Average collect..............." << avg_collect << "\n";
     std::cout << "Average militancy............." << avg_militancy << "\n";
     std::cout << "Average intelligence.........." << avg_intelligence << "\n";
     std::cout << "Average vision................" << avg_vision / 10 << " \n";
-    std::cout << "Average share................." << avg_share << " \n";
     std::cout << "Average children amount......." << avg_children_amount / 10 << "\n";
     std::cout << "Average children health......." << avg_children_health << "\n";
     std::cout << "Average health................" << avg_health << "\n";
@@ -98,7 +93,6 @@ void Run::print_average() {
     json_parameters["militancy"] = avg_militancy;
     json_parameters["intelligence"] = avg_intelligence;
     json_parameters["vision"] = avg_vision;
-    json_parameters["share"] = avg_share;
     json_parameters["children_amount"] = avg_children_amount;
     json_parameters["children_health"] = avg_children_health;
     json_parameters["health"] = avg_health;
@@ -111,7 +105,7 @@ void Run::print_average() {
 
 void Run::print_progress(int today) {
     if (progress_ - 0. >= 1e-6) {
-        for (int i = 0; i < 15; ++i) {
+        for (int i = 0; i < 14; ++i) {
             std::cout << "\033[F\x1b[2K";
             std::cout.flush();
         }

@@ -53,7 +53,7 @@ void move(Bot& bot, Map& map) {
     );
 
     ++bot.lifetime_;
-    bot.health_ -= parameters::damage * std::max(1, path_length);
+    bot.health_ -= parameters::damage * std::max(1, path_length + bot.lifetime_ / 10);
 
     map[bot.position_].add_bot(bot);
 }

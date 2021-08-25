@@ -44,24 +44,6 @@ void Cell::split_food() {
     }
 }
 
-void Cell::share_food() {
-    std::sort(
-        bots_in_cell_.begin(),
-        bots_in_cell_.end(),
-        [](Bot* first, Bot* second) {
-            return first->health_ > second->health_;
-        }
-    );
-    for (
-        int front = 0, back = bots_in_cell_.size() - 1;
-        front < back;
-        ++front, --back) {
-        int food_to_share = bots_in_cell_[front]->share_;
-        bots_in_cell_[front]->health_ -= food_to_share;
-        bots_in_cell_[back]->health_ += food_to_share;
-    }
-}
-
 void Cell::fight() {
     std::sort(
         bots_in_cell_.begin(),
@@ -92,9 +74,8 @@ void Cell::do_all(std::list<Bot>& bots) {
             enemy_activation();
         }
         split_food();
-        share_food();
-        fight();
         reproduce(bots);
+        fight();
         bots_in_cell_.clear();
         total_collect_coeff_ = 0;
     }
@@ -116,7 +97,7 @@ void Cell::altruists_activation() {
 void Cell::enemy_activation() {
     for (auto& bot : bots_in_cell_) {
         if ((bot->is_altruist_ && parameters::random() % 2) || !bot->is_protected_) {
-            bot->health_ = parameters::damage;
+            bot->health_ = 0;
         }
         bot->is_protected_ = false;
     }
