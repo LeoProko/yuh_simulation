@@ -209,6 +209,13 @@ git push
 замержить ваш бранч в мастер
 
 ### Удобства
+
+Первым делом настройте git. Если вы уже это делали, то заново настравить не надо
+```bash
+git config --global user.name "Vasya Pupkin"
+git config --global user.email vasya@pupkin.ru
+```
+
 Для удобства вы можете у себя на компьютере в папке `/home/username/` создать файл
 `.gitconfig`. Вставьте в него следующие данные
 
